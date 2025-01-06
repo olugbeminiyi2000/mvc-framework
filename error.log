@@ -1,0 +1,214 @@
+2025-01-06 01:02:16,964 - ERROR - Key 'animal' not found for deletion: 'animal'
+2025-01-06 01:02:16,996 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:02:17,156 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 01:02:17,156 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 01:07:02,836 - ERROR - Key 'animal' not found for deletion: 'animal'
+2025-01-06 01:07:02,849 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:07:02,949 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 01:07:02,949 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 01:12:09,907 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:12:09,948 - ERROR - Key 'animal' not found for deletion: 'animal'
+2025-01-06 01:12:09,972 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:12:10,062 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 01:12:10,062 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 01:12:33,283 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:12:33,364 - ERROR - Key 'animal' not found for deletion: 'animal'
+2025-01-06 01:12:33,378 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:12:33,463 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 01:12:33,463 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 01:19:13,670 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:19:13,679 - ERROR - Key 'animal' not found for deletion: 'animal'
+2025-01-06 01:19:13,862 - ERROR - Failed to execute add on age: expected string or bytes-like object
+2025-01-06 01:19:13,862 - ERROR - Failed to execute update on height: expected string or bytes-like object
+2025-01-06 01:19:13,862 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:19:13,862 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:24:53,251 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:24:53,483 - ERROR - Failed to execute add on age: expected string or bytes-like object
+2025-01-06 01:24:53,483 - ERROR - Failed to execute update on height: expected string or bytes-like object
+2025-01-06 01:24:53,483 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:24:53,483 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:26:19,096 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:26:19,102 - ERROR - Key 'animal' not found for deletion: 'animal'
+2025-01-06 01:26:19,263 - ERROR - Failed to execute add on age: expected string or bytes-like object
+2025-01-06 01:26:19,263 - ERROR - Failed to execute update on height: expected string or bytes-like object
+2025-01-06 01:26:19,263 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:26:19,263 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:28:43,627 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:28:43,641 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:28:43,764 - ERROR - Failed to execute add on age: expected string or bytes-like object
+2025-01-06 01:28:43,764 - ERROR - Failed to execute update on height: expected string or bytes-like object
+2025-01-06 01:28:43,765 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:28:43,765 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:31:41,643 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:31:41,768 - ERROR - Failed to execute add on age: expected string or bytes-like object
+2025-01-06 01:31:41,768 - ERROR - Failed to execute update on height: expected string or bytes-like object
+2025-01-06 01:31:41,768 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:31:41,768 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:31:55,623 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:31:55,645 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:31:55,757 - ERROR - Failed to execute add on age: expected string or bytes-like object
+2025-01-06 01:31:55,760 - ERROR - Failed to execute update on height: expected string or bytes-like object
+2025-01-06 01:31:55,760 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:31:55,760 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:46:16,863 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:46:16,880 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:46:16,993 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:46:16,993 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:52:10,775 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:52:10,788 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:52:10,814 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 01:52:10,814 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 01:52:10,818 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:52:10,818 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:53:04,968 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:53:04,986 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:53:05,020 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 01:53:05,020 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 01:53:05,020 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:53:05,020 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:56:17,872 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:56:17,888 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:56:17,922 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 01:56:17,922 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 01:56:17,925 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:56:17,925 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 01:57:26,430 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 01:57:26,447 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 01:57:26,477 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 01:57:26,477 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 01:57:26,491 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 01:57:26,492 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:00:19,491 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:00:19,507 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:00:19,540 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:00:19,540 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:00:19,547 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:00:19,547 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:01:35,993 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:01:36,006 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:01:36,036 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:01:36,036 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:01:36,044 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:01:36,044 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:04:12,177 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:04:12,193 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:04:12,216 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:04:12,216 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:04:12,221 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:04:12,221 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:12:09,920 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:12:09,938 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:12:09,980 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:12:09,982 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:12:09,984 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:12:09,984 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:12:53,057 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:12:53,118 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:12:53,118 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:12:53,126 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:12:53,126 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:13:02,595 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:13:02,604 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:13:02,632 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:13:02,634 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:13:02,636 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:13:02,636 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:13:37,014 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:13:37,029 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:13:37,059 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:13:37,059 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:13:37,067 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:13:37,067 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:16:33,314 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:16:33,327 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:16:33,357 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:16:33,357 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:16:33,363 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:16:33,363 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:17:02,483 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:17:02,499 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:17:02,533 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:17:02,533 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:17:02,537 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:17:02,537 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:31:49,827 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:31:49,843 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:31:49,896 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:31:49,896 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:31:49,902 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:31:49,902 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:32:21,932 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:32:21,957 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:32:21,994 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:32:21,995 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:32:21,998 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:32:21,998 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:37:01,919 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:37:01,935 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:37:01,965 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:37:01,965 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:37:01,970 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:37:01,970 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:38:27,608 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:38:27,626 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:38:27,648 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:38:27,648 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:38:27,657 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:38:27,657 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:47:46,783 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:47:46,798 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:47:46,837 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:47:46,837 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:47:46,841 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:47:46,841 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:55:57,784 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:55:57,800 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:55:57,822 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:55:57,822 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:55:57,829 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:55:57,829 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 02:56:19,271 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 02:56:19,288 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 02:56:19,316 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 02:56:19,316 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 02:56:19,318 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 02:56:19,318 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 03:10:50,280 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 03:11:51,678 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 03:11:51,688 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 03:11:51,722 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 03:11:51,722 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 03:11:51,724 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 03:11:51,724 - ERROR - Failed to execute delete on age: Key 'age' does not exist.
+2025-01-06 03:13:06,221 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 03:16:36,908 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 03:20:59,208 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 03:20:59,217 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 03:20:59,235 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 03:20:59,236 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 03:20:59,240 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 03:20:59,240 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-06 03:21:09,879 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 03:21:09,892 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 03:21:09,907 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 03:21:09,907 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 03:21:09,910 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 03:21:09,910 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-06 03:27:47,060 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 03:27:47,074 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 03:27:47,092 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 03:27:47,092 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 03:27:47,095 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 03:27:47,095 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-06 13:43:15,550 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 13:43:15,569 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 13:43:15,604 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 13:43:15,604 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 13:43:15,604 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 13:43:15,604 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-06 13:48:11,349 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-06 13:48:11,363 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-06 13:48:11,392 - ERROR - Unsupported action: submit in batch operation.
+2025-01-06 13:48:11,392 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-06 13:48:11,397 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-06 13:48:11,397 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
