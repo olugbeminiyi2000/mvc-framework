@@ -26,7 +26,7 @@ class V1BaseController:
             raise TypeError(f"Expected an instance of Transactions, got {type(v1_transactions).__name__} instead.")
         self.transaction_class = v1_transactions
 
-    def create(self, data: dict) -> bool:
+    def create(self, data: dict, **kwargs) -> bool:
         """
         Creates a new record in the database using a dictionary of key-value pairs.
 
@@ -77,7 +77,7 @@ class V1BaseController:
         
         return result
 
-    def read(self, filters: list[str]) -> dict:
+    def read(self, filters: list[str], **kwargs) -> dict:
         """
         Reads data from the database based on a list of filters.
 
@@ -134,7 +134,7 @@ class V1BaseController:
             return {}
         return self.transaction_class.read_data_store
     
-    def update(self, data: dict) -> bool:
+    def update(self, data: dict, **kwargs) -> bool:
         """
         Updates existing records in the database using a dictionary of key-value pairs.
 
@@ -185,7 +185,7 @@ class V1BaseController:
         
         return result
     
-    def delete(self, filters: list[str]) -> bool:
+    def delete(self, filters: list[str], **kwargs) -> bool:
         """
         Deletes records from the database based on a list of filters.
 

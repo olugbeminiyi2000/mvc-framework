@@ -1,10 +1,11 @@
-from json.decoder import JSONDecodeError
 import json
+from json.decoder import JSONDecodeError
 import logging
-import os
-from typing import Callable, Dict, Any
-from models.validation.v1_Validation import CheckAllValidation, V1Validation
 from models.error.v1_Error import InvalidKeyValueError
+from models.validation.v1_Validation import CheckAllValidation, V1Validation
+import os
+import pickle
+from typing import Callable, Dict, Any
 
 # Set up basic logging configuration
 logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -15,13 +16,52 @@ class V1Model:
     A model class that handles reading, writing, and validating data stored in a JSON file.
     Supports registering and validating rules for key-value pairs.
     """
-    
+    DEFAULT_FILE_PATH = "model_state.pkl"
+
     def __init__(self):
         """
         Initializes the model by reading existing data from the file and initializing validation rules.
         """
-        self.read_data_from_file()  # Load data from a file on initialization
-        self._validation_rules: Dict[str, Dict[str, Any]] = {}  # Holds validation rules for each field
+        self.file_path = self.DEFAULT_FILE_PATH
+        self.read_data_from_file()
+        self._validation_rules: Dict[str, Dict[str, Any]] = self._load_or_initialize_custom_validation_rules()
+
+    def _atomic_save(self) -> None:
+        """
+        Saves the Model object state atomically to the file to ensure data integrity.
+        This involves writing to a temporary file first and then replacing the original file.
+        
+        Raises:
+            RuntimeError: If the save operation fails.
+        """
+        temp_file = self.file_path + ".tmp"
+        try:
+            with open(temp_file, "wb") as f:
+                pickle.dump(self._validation_rules, f)
+            os.replace(temp_file, self.file_path)
+        except Exception as e:
+            if os.path.exists(temp_file):
+                os.remove(temp_file)
+            raise RuntimeError(f"Failed to save Model state: {e}")
+
+    def _load_or_initialize_custom_validation_rules(self) -> Dict[str, Any]:
+        """
+        Loads the custom validation rules from the file if it exists.
+        If the file does not exist, initializes an empty dictionary.
+
+        Returns:
+            Dict[str, Any]: The loaded or initialized validation rules.
+
+        Raises:
+            RuntimeError: If the load operation fails.
+        """
+        if os.path.exists(self.file_path):
+            try:
+                with open(self.file_path, "rb") as f:
+                    return pickle.load(f)
+            except Exception as e:
+                raise RuntimeError(f"Failed to load Model state from {self.file_path}: {e}")
+        return {}
     
     def register_rule(self, field: str, rule: Callable[[Any], bool], message: str, example_value: Any) -> None:
         """
@@ -56,6 +96,7 @@ class V1Model:
 
         self._validation_rules[field]["messages"].append(message)
         self._validation_rules[field]["rules"].append(rule)
+        self._atomic_save()
 
     def _generate_example_value(self, example_value: Any) -> Any:
         """
@@ -109,6 +150,7 @@ class V1Model:
         if field not in self._validation_rules:
             raise ValueError(f"Field '{field}' does not exist in the validation rules to delete.")
         del self._validation_rules[field]
+        self._atomic_save()
 
     def validate(self, field: str, value: Any) -> None:
         """
