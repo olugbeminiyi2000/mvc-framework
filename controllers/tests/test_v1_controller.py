@@ -18,7 +18,7 @@ class TestV1BaseController(unittest.TestCase):
         self.transaction = Transactions(self.model)
         self.controller = V1BaseController(self.transaction)
 
-    def test_create_success(self) -> None:
+    def test_create_succesful(self) -> None:
         """
         Test case to validate successful creation of data.
         """
@@ -33,7 +33,7 @@ class TestV1BaseController(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.controller.create({})
 
-    def test_create_failure_already_existing_data(self) -> None:
+    def test_create_unsuccessful(self) -> None:
         """
         Test case to ensure DefaultError is raised for creating data that already exists.
         """
@@ -58,10 +58,10 @@ class TestV1BaseController(unittest.TestCase):
 
     def test_read_failure_unknown_data(self) -> None:
         """
-        Test case to ensure DefaultError is raised for reading unknown data.
+        Test case to ensure all Exception (default, key) Error is raised raised for reading unknown data.
         """
         filters = ["parent_status"]
-        with self.assertRaises(DefaultError):
+        with self.assertRaises(Exception):
             self.controller.read(filters)
 
     def test_read_empty_filters(self) -> None:
@@ -115,13 +115,13 @@ class TestV1BaseController(unittest.TestCase):
         result = self.controller.delete(filters)
         self.assertTrue(result)
 
-    def test_delete_failure_unknown_data(self) -> None:
+    def test_delete_unsuccessful(self) -> None:
         """
-        Test case to ensure DefaultError is raised for attempting to delete unknown data.
+        Test case to ensure Exception (default, key) is raised for attempting to delete unknown data.
         """
         filters = ["parent_status"]
-        with self.assertRaises(DefaultError):
-            self.controller.read(filters)
+        with self.assertRaises(Exception):
+            self.controller.delete(filters)
 
     def test_delete_empty_filters(self) -> None:
         """

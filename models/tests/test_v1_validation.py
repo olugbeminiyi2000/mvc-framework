@@ -1,5 +1,6 @@
-import unittest
 from models.validation.v1_Validation import V1Validation, CheckAllValidation
+import unittest
+
 
 class TestV1Validation(unittest.TestCase):
     def setUp(self):

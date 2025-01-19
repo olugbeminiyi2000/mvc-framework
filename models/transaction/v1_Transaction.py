@@ -1,6 +1,6 @@
 import hashlib
 import json
-import logging
+from loggings.v1_Logging import error_logger, info_logger, warning_logger
 from models.validation.v1_Validation import CheckAllValidation, V1Validation
 from models.v1_Model import V1Model
 from models.error.v1_Error import InvalidKeyValueError, DefaultError, TransactionQueueError
@@ -10,25 +10,9 @@ import time
 from typing import List, Dict, Optional, Any
 
 
-# Set up error logging to error.log
-error_logger = logging.getLogger('error')
-error_handler = logging.FileHandler('error.log')
-error_handler.setLevel(logging.ERROR)
-error_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-error_handler.setFormatter(error_formatter)
-error_logger.addHandler(error_handler)
-
-# Set up info logging to info.log
-info_logger = logging.getLogger('info')
-info_handler = logging.FileHandler('info.log')
-info_handler.setLevel(logging.INFO)
-info_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-info_handler.setFormatter(info_formatter)
-info_logger.addHandler(info_handler)
-
-
 class Transactions(V1Model):
     active: bool = False  # Tracks the status of an ongoing transaction
+    read_data_store: Dict[str, Any] = {} # Static dictionary to store read data
 
     def __init__(self, v1_model: V1Model):
         """
@@ -46,7 +30,16 @@ class Transactions(V1Model):
         self.transaction_id: Optional[str] = None
         self.transaction_queue: List[Dict] = []  # Queue for storing transaction operations
         self.transaction_status: Optional[str] = None
-
+    
+    @staticmethod
+    def get_read_data() -> Dict[str, Any]:
+        """
+        Static method to retrieve read data stored during the transaction.
+        
+        :return: A dictionary containing the key-value pairs of read data.
+        """
+        return Transactions.read_data_store
+    
     @staticmethod
     def generate_transaction_id(prefix: str = "TX", suffix: str = "", length: int = 12) -> str:
         """
@@ -90,7 +83,7 @@ class Transactions(V1Model):
         except Exception as e:
             self.transaction_queue.append({"transaction_id": self.transaction_id, "action": self.read.__name__, "data": (key_data, None), "outcome": "failure", "timestamp": time.time(), "operation_id": hashlib.md5(f"{self.read.__name__}-{key_data}-{time.time()}".encode()).hexdigest()})
             Transactions.active = False
-            logging.error("Key '%s' not found for deletion: %s", key_data, e)
+            error_logger.error("Key '%s' not found for deletion: %s", key_data, e)
             raise DefaultError(f"Key '{key_data}' does not exist.") from e
 
     def add(self, key_data: str, value_data: str, allowNone: bool = False) -> None:
@@ -241,9 +234,13 @@ class Transactions(V1Model):
                 elif action == "update":
                     self.transaction_state[key_data] = value_data
                 elif action == "delete":
-                    del self.transaction_state[key_data]
+                    try:
+                        del self.transaction_state[key_data]
+                    except KeyError:
+                        warning_logger.warning(f"Multiple Deletion detected: label {key_data} data already deleted!!!")
                 else:
-                    print(self.transaction_state[key_data])
+                    Transactions.read_data_store[key_data] = self.transaction_state[key_data]
+                    info_logger.info(f"Transaction data read: {self.transaction_state[key_data]}")
 
         self._data = self.transaction_state.copy()
         self.write_data_to_file()

@@ -212,3 +212,138 @@
 2025-01-06 13:48:11,392 - ERROR - Unsupported action: annotate in batch operation.
 2025-01-06 13:48:11,397 - ERROR - Key 'age' not found for deletion: 'age'
 2025-01-06 13:48:11,397 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-17 14:01:31,532 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-17 14:01:31,543 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-17 14:01:31,576 - ERROR - Unsupported action: submit in batch operation.
+2025-01-17 14:01:31,576 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-17 14:01:31,578 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-17 14:01:31,578 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-17 14:01:31,597 - ERROR - Key 'highschool' not found for deletion: 'highschool'
+2025-01-18 12:14:35,402 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 12:14:35,508 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 12:14:35,548 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:14:35,548 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:14:35,599 - ERROR - Key 'blood_group' not found for deletion: 'blood_group'
+2025-01-18 12:14:35,607 - ERROR - Error: Key 'blood_group' could not be deleted.
+2025-01-18 12:14:35,641 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:14:35,641 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:15:02,151 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 12:15:02,193 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:15:02,193 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:15:02,268 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:15:02,268 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:15:02,489 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-18 12:15:02,505 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-18 12:15:02,546 - ERROR - Unsupported action: submit in batch operation.
+2025-01-18 12:15:02,546 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-18 12:15:02,555 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-18 12:15:02,555 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-18 12:15:02,579 - ERROR - Key 'highschool' not found for deletion: 'highschool'
+2025-01-18 12:16:10,650 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-18 12:16:10,666 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-18 12:16:10,704 - ERROR - Unsupported action: submit in batch operation.
+2025-01-18 12:16:10,704 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-18 12:16:10,710 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-18 12:16:10,711 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-18 12:16:10,749 - ERROR - Key 'highschool' not found for deletion: 'highschool'
+2025-01-18 12:16:19,348 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 12:16:19,416 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:16:19,416 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:16:19,480 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:16:19,480 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:24:09,196 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:24:09,196 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:24:09,265 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:24:09,265 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:32:16,074 - ERROR - Error: 'bone_mass' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 12:32:16,174 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 12:32:16,214 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:32:16,214 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 12:32:16,254 - ERROR - Key 'blood_group' not found for deletion: 'blood_group'
+2025-01-18 12:32:16,254 - ERROR - Error: Key 'blood_group' could not be deleted.
+2025-01-18 12:32:16,297 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:32:16,297 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:32:35,485 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:32:35,485 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 12:32:35,532 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:32:35,532 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:39:26,236 - ERROR - Error: 'bone_mass' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 12:39:26,328 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 12:39:26,376 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:39:26,376 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 12:39:26,404 - ERROR - Key 'blood_group' not found for deletion: 'blood_group'
+2025-01-18 12:39:26,404 - ERROR - Error: Key 'blood_group' could not be deleted.
+2025-01-18 12:39:26,462 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:39:26,462 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:39:40,307 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:39:40,307 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 12:39:40,364 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:39:40,364 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 12:44:50,607 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:44:50,607 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 12:44:50,618 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 12:44:50,618 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 13:20:19,910 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:20:19,979 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:20:19,979 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:20:19,988 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:20:19,988 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 13:29:12,507 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:29:12,511 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:29:12,514 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:29:12,566 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:29:12,570 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:29:12,584 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:33:40,194 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:33:40,197 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:33:40,197 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:33:40,199 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:33:40,256 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:33:40,260 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:33:40,274 - ERROR - Unexpected error: Transaction None ongoing cannot proceed.
+2025-01-18 13:39:05,845 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:39:05,901 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:39:05,904 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:39:05,904 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:39:05,927 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:39:05,928 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 13:40:55,816 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:40:55,819 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:40:55,819 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:40:55,835 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:40:55,835 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 13:41:12,471 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:41:12,474 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:41:12,475 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:41:12,492 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:41:12,492 - ERROR - Error: Key 'parent_status' does not exist.
+2025-01-18 13:45:21,150 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:45:21,154 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:45:21,154 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:45:21,165 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:53:10,936 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:53:10,947 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:53:10,947 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:53:10,950 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:54:40,306 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-18 13:54:40,330 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-18 13:54:40,368 - ERROR - Unsupported action: submit in batch operation.
+2025-01-18 13:54:40,368 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-18 13:54:40,369 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-18 13:54:40,370 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-18 13:54:40,391 - ERROR - Key 'highschool' not found for deletion: 'highschool'
+2025-01-18 13:54:40,463 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:54:40,485 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:54:40,485 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:54:40,488 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:54:59,683 - ERROR - Some operations have failed, rolling back the transaction.
+2025-01-18 13:54:59,691 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-01-18 13:54:59,709 - ERROR - Unsupported action: submit in batch operation.
+2025-01-18 13:54:59,709 - ERROR - Unsupported action: annotate in batch operation.
+2025-01-18 13:54:59,713 - ERROR - Key 'age' not found for deletion: 'age'
+2025-01-18 13:54:59,713 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-01-18 13:54:59,720 - ERROR - Key 'highschool' not found for deletion: 'highschool'
+2025-01-18 13:55:06,746 - ERROR - Error: 'siblings' failed validation: Key must be unique, or use update method instead to make changes.
+2025-01-18 13:55:06,756 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'
+2025-01-18 13:55:06,756 - ERROR - Error: Key 'parent_status' could not be deleted.
+2025-01-18 13:55:06,759 - ERROR - Key 'parent_status' not found for deletion: 'parent_status'

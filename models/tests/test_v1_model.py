@@ -1,7 +1,8 @@
-import unittest
-from unittest.mock import patch, mock_open
 from models.error.v1_Error import InvalidKeyValueError
 from models.v1_Model import V1Model
+import unittest
+from unittest.mock import patch, mock_open
+
 
 class TestV1Model(unittest.TestCase):
 
