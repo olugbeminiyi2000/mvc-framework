@@ -54,7 +54,7 @@ class TestV1BaseController(unittest.TestCase):
         """
         filters = ["siblings"]
         result = self.controller.read(filters)
-        self.assertEqual(result, {"siblings": 5})
+        self.assertEqual(result, {'university': 'African Leadership University', "siblings": 5})
 
     def test_read_failure_unknown_data(self) -> None:
         """

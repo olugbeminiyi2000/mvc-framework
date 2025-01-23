@@ -71,7 +71,7 @@ class TestTransactions(unittest.TestCase):
     def test_end_transaction_when_committed(self):
         # Test ending a committed transaction
         self.transaction.begin_transaction()
-        self.transaction.add("username", "theDarkVoid")
+        self.transaction.add("furniture", "table")
         self.transaction.commit_transaction()
         self.transaction.end_transaction()
         self.assertFalse(Transactions.active)
