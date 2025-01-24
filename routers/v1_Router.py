@@ -1,13 +1,15 @@
+from controllers.v1_Controller import V1AbstractController
 import inspect
 import os
 import pickle
+from typing import Any, Dict, Optional
 
 
 class V1Router:
     DEFAULT_FILE_PATH = "router_state.pkl"
 
-    def __init__(self):
-        self.file_path = self.DEFAULT_FILE_PATH
+    def __init__(self, file_path: Optional[str] = None):
+        self.file_path = file_path or self.DEFAULT_FILE_PATH
         self.routes = self._load_or_initialize_routes()
 
     def _atomic_save(self):
@@ -30,44 +32,97 @@ class V1Router:
                     return pickle.load(f)
             except Exception as e:
                 raise RuntimeError(f"Failed to load Router state from {self.file_path}: {e}")
-        # TODO create a default controller method that returns a information of choice.
         return {}
 
-    def validate_controller_action(self, controller_class, action_name):
-        action_method = getattr(controller_class(), action_name)
+    def validate_controller_action(self, controller_class: Any, action_name: str):
+        """
+        Validates that the controller and action conform to the required structure.
+
+        Args:
+            controller_class (Any): The controller class to validate.
+            action_name (str): The name of the action to validate.
+
+        Raises:
+            TypeError: If the controller does not inherit from V1AbstractController.
+            ValueError: If the action does not meet the required argument structure.
+        """
+        if not issubclass(controller_class, V1AbstractController):
+            raise TypeError(
+                f"The controller '{controller_class.__name__}' must inherit from 'V1AbstractController'."
+            )
+
+        action_method = getattr(controller_class, action_name, None)
+        if action_method is None:
+            raise ValueError(f"Action '{action_name}' not found in controller '{controller_class.__name__}'.")
+
+        # Get the signature of the action method
         signature = inspect.signature(action_method)
         parameters = signature.parameters
 
-        if "data" not in parameters:
-            raise ValueError(f"Controller action '{action_name}' must accept 'data' argument.")
-
-        required_params = [
-            param for param, param_info in parameters.items()
-            if param_info.default == inspect.Parameter.empty
+        # Exclude 'self' from the parameter list
+        filtered_params = [
+            (name, param) for name, param in parameters.items() if name != "self"
         ]
-        if len(required_params) > 1:
-            raise ValueError(
-                f"Controller action '{action_name}' must only require 'data' as a non-optional argument, "
-                f"found: {', '.join(required_params)}."
-            )
 
-        for param, param_info in parameters.items():
-            if param != "data" and param_info.default == inspect.Parameter.empty:
+        # Ensure 'data' is the first argument
+        if not filtered_params or filtered_params[0][0] != "data":
+            raise ValueError(f"Controller action '{action_name}' must accept 'data' as the first argument.")
+
+        # Ensure all other arguments are **kwargs
+        for name, param in filtered_params[1:]:
+            if param.kind != inspect.Parameter.VAR_KEYWORD:
                 raise ValueError(
-                    f"Controller action '{action_name}' cannot require arguments other than 'data'. "
-                    f"Please pass additional parameters as **kwargs."
+                    f"Controller action '{action_name}' must only accept 'data' as a required argument and use **kwargs for additional arguments. "
+                    f"Invalid parameter: '{name}'."
                 )
 
-    def add_route(self, route, controller_class, action_name):
+
+    def add_route(self, route: str, controller_class: Any, action_name: str):
+        """
+        Adds a route to the router.
+
+        Args:
+            route (str): The route URL.
+            controller_class (Any): The controller class.
+            action_name (str): The name of the action method.
+
+        Raises:
+            RuntimeError: If the route cannot be added due to validation errors.
+        """
         self.validate_controller_action(controller_class, action_name)
-        self.routes[route] = getattr(controller_class(), action_name)
+        self.routes[route] = (controller_class, action_name)
         self._atomic_save()
 
-    def route(self, url: str, method: str = "GET", data=None, **kwargs):
+    def route(self, url: str, method: str = "GET", data: Optional[Dict[str, Any]] = None, **kwargs: Any):
+        """
+        Routes a request to the appropriate controller action.
+
+        Args:
+            url (str): The URL of the route.
+            method (str): The HTTP method (default: "GET").
+            data (Optional[Dict[str, Any]]): The data to pass to the action.
+            **kwargs (Any): Additional arguments for the action.
+
+        Returns:
+            Any: The result of the controller action.
+
+        Raises:
+            ValueError: If the route is not found.
+        """
         if url in self.routes:
-            controller_action = self.routes[url]
-            if method.upper() in {"GET", "POST", "PUT", "DELETE"}:
-                return controller_action(data, **kwargs)
+            controller_class, action_name = self.routes[url]
+            controller_instance = controller_class()
+            action_method = getattr(controller_instance, action_name)
+
+            if data is None:
+                data = {}
+
+            if method.upper() in {"GET", "POST", "PUT", "DELETE", "PATCH"}:
+                if kwargs:
+                    return action_method(data, **kwargs)
+                return action_method(data)
+            else:
+               raise ValueError(f"Crud method '{method.upper()}' not found.")
         else:
             raise ValueError(f"Route '{url}' not found.")
 
