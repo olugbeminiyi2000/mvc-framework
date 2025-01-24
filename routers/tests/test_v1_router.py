@@ -9,23 +9,11 @@ class StudentController(V1AbstractController):
     def __init__(self):
         super().__init__()
 
-    def create(self, data, **kwargs):
-        return {"message": "Created student", "data": data, "kwargs": kwargs}
+    def search_student(self, **kwargs):
+        return {"message": "Searched student", "kwargs": kwargs}
 
-    def read(self, data, **kwargs):
-        return {"message": "Read student", "data": data, "kwargs": kwargs}
-
-    def update(self, data, **kwargs):
-        return {"message": "Updated student", "data": data, "kwargs": kwargs}
-
-    def delete(self, data, **kwargs):
-        return {"message": "Deleted student", "data": data, "kwargs": kwargs}
-
-    def search_student(self, data, **kwargs):
-        return {"message": "Searched student", "data": data, "kwargs": kwargs}
-
-    def add_student(self, data):
-        return {"message": "Added student", "data": data}
+    def add_student(self, **kwargs):
+        return {"message": "Added student", "kwargs": kwargs}
 
 
 class BadController(V1AbstractController):
@@ -33,7 +21,7 @@ class BadController(V1AbstractController):
 
 
 class CartController:
-    def list_items(self, data):
+    def list_items(self, **kwargs):
         return "Invalid action"
 
 
@@ -51,7 +39,7 @@ class TestV1Router(unittest.TestCase):
             os.remove(self.router.file_path)
 
     def test_abstract_methods_not_implemented(self):
-        """Test user defined controller without abstract methods not implemented"""
+        """Test user-defined controller without abstract methods not implemented."""
         with self.assertRaises(TypeError):
             BadController()
 
@@ -84,47 +72,30 @@ class TestV1Router(unittest.TestCase):
             def __init__(self):
                 super().__init__()
 
-            def create(self, data, **kwargs):
-                pass
-
-            def read(self, data, **kwargs):
-                pass
-
-            def update(self, data, **kwargs):
-                pass
-
-            def delete(self, data, **kwargs):
-                pass
-
             def get_location(self, street, state):
-                pass
-
-            def send_location(self, data, message):
                 pass
 
         with self.assertRaises(ValueError):
             self.router.add_route("/find_loc", InvalidSignatureController, "get_location")
 
-        with self.assertRaises(ValueError):
-            self.router.add_route("/send_loc", InvalidSignatureController, "send_location")
 
     def test_route_execution_with_valid_url(self):
         """Test route execution with a valid URL."""
         self.router.add_route("/add", StudentController, "add_student")
-        response = self.router.route("/add", data={"name": "Obolo Emmanuel Oluwapelumi"})
+        response = self.router.route("/add", name="Obolo Emmanuel Oluwapelumi")
         self.assertEqual(response["message"], "Added student")
-        self.assertEqual(response["data"], {"name": "Obolo Emmanuel Oluwapelumi"})
+        self.assertEqual(response["kwargs"], {"name": "Obolo Emmanuel Oluwapelumi"})
 
     def test_route_execution_with_kwargs(self):
         """Test route execution with additional kwargs."""
         self.router.add_route("/search", StudentController, "search_student")
-        response = self.router.route("/search", data={"name": "Obolo Emmanuel Oluwapelumi"}, intake="January")
-        self.assertEqual(response["kwargs"], {"intake": "January"})
+        response = self.router.route("/search", name="Obolo Emmanuel Oluwapelumi", intake="January")
+        self.assertEqual(response["kwargs"], {"name": "Obolo Emmanuel Oluwapelumi", "intake": "January"})
 
     def test_route_execution_with_invalid_url(self):
         """Test route execution with an invalid URL."""
         with self.assertRaises(ValueError):
-            self.router.route("/invalid_url", data={"Unknown": "404 not found"})
+            self.router.route("/invalid_url", name="Unknown", message="404 not found")
 
     def test_clear_routes(self):
         """Test clearing all routes."""

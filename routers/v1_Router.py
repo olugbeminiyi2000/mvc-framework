@@ -64,18 +64,13 @@ class V1Router:
             (name, param) for name, param in parameters.items() if name != "self"
         ]
 
-        # Ensure 'data' is the first argument
-        if not filtered_params or filtered_params[0][0] != "data":
-            raise ValueError(f"Controller action '{action_name}' must accept 'data' as the first argument.")
-
-        # Ensure all other arguments are **kwargs
-        for name, param in filtered_params[1:]:
+        # Ensure that all arguments after 'self' are **kwargs (no required arguments)
+        for name, param in filtered_params:
             if param.kind != inspect.Parameter.VAR_KEYWORD:
                 raise ValueError(
-                    f"Controller action '{action_name}' must only accept 'data' as a required argument and use **kwargs for additional arguments. "
+                    f"Controller action '{action_name}' must only accept 'self' and **kwargs for additional arguments. "
                     f"Invalid parameter: '{name}'."
                 )
-
 
     def add_route(self, route: str, controller_class: Any, action_name: str):
         """
@@ -93,15 +88,14 @@ class V1Router:
         self.routes[route] = (controller_class, action_name)
         self._atomic_save()
 
-    def route(self, url: str, method: str = "GET", data: Optional[Dict[str, Any]] = None, **kwargs: Any):
+    def route(self, url: str, method: str = "GET", **kwargs: Any):
         """
         Routes a request to the appropriate controller action.
 
         Args:
             url (str): The URL of the route.
             method (str): The HTTP method (default: "GET").
-            data (Optional[Dict[str, Any]]): The data to pass to the action.
-            **kwargs (Any): Additional arguments for the action.
+            **kwargs (Any): Data to pass to the action as **kwargs.
 
         Returns:
             Any: The result of the controller action.
@@ -114,17 +108,13 @@ class V1Router:
             controller_instance = controller_class()
             action_method = getattr(controller_instance, action_name)
 
-            if data is None:
-                data = {}
-
             if method.upper() in {"GET", "POST", "PUT", "DELETE", "PATCH"}:
-                if kwargs:
-                    return action_method(data, **kwargs)
-                return action_method(data)
+                return action_method(**kwargs)
             else:
-               raise ValueError(f"Crud method '{method.upper()}' not found.")
+                raise ValueError(f"Crud method '{method.upper()}' not found.")
         else:
             raise ValueError(f"Route '{url}' not found.")
+
 
     def clear_routes(self):
         """Clears all routes and saves the empty state."""
