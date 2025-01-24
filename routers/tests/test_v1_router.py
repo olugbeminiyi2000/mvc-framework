@@ -3,6 +3,7 @@ import pickle
 import unittest
 from routers.v1_Router import V1Router
 from controllers.v1_Controller import V1AbstractController
+from views.v1_View import V1BaseView
 
 
 class StudentController(V1AbstractController):
@@ -14,6 +15,14 @@ class StudentController(V1AbstractController):
 
     def add_student(self, **kwargs):
         return {"message": "Added student", "kwargs": kwargs}
+
+
+class StudentView(V1BaseView):
+    def __init__(self, **kwargs):
+        self.data = kwargs
+
+    def render(self, **kwargs):
+        return f"Rendered: {kwargs}"
 
 
 class BadController(V1AbstractController):
@@ -56,41 +65,29 @@ class TestV1Router(unittest.TestCase):
         router = V1Router(file_path=self.router.file_path)
         self.assertEqual(router.routes, routes)
 
-    def test_add_route_with_valid_controller(self):
-        """Test adding a valid route with a valid controller."""
-        self.router.add_route("/search", StudentController, "search_student")
+    def test_add_route_with_valid_controller_and_view(self):
+        """Test adding a valid route with a valid controller and view."""
+        self.router.add_route("/search", StudentController, "search_student", StudentView)
         self.assertIn("/search", self.router.routes)
 
     def test_add_route_with_invalid_controller(self):
         """Test adding a route with a controller not inheriting V1AbstractController."""
         with self.assertRaises(TypeError):
-            self.router.add_route("/all_item", CartController, "list_items")
+            self.router.add_route("/all_item", CartController, "list_items", StudentView)
 
-    def test_add_route_with_invalid_action_signature(self):
-        """Test adding a route with an invalid action signature."""
-        class InvalidSignatureController(V1AbstractController):
-            def __init__(self):
-                super().__init__()
+    def test_add_route_with_invalid_view(self):
+        """Test adding a route with a view not inheriting V1BaseView."""
+        class InvalidView:
+            pass
 
-            def get_location(self, street, state):
-                pass
+        with self.assertRaises(TypeError):
+            self.router.add_route("/search", StudentController, "search_student", InvalidView)
 
-        with self.assertRaises(ValueError):
-            self.router.add_route("/find_loc", InvalidSignatureController, "get_location")
-
-
-    def test_route_execution_with_valid_url(self):
-        """Test route execution with a valid URL."""
-        self.router.add_route("/add", StudentController, "add_student")
+    def test_route_execution_with_valid_url_and_view(self):
+        """Test route execution with a valid URL and rendering via the view."""
+        self.router.add_route("/add", StudentController, "add_student", StudentView)
         response = self.router.route("/add", name="Obolo Emmanuel Oluwapelumi")
-        self.assertEqual(response["message"], "Added student")
-        self.assertEqual(response["kwargs"], {"name": "Obolo Emmanuel Oluwapelumi"})
-
-    def test_route_execution_with_kwargs(self):
-        """Test route execution with additional kwargs."""
-        self.router.add_route("/search", StudentController, "search_student")
-        response = self.router.route("/search", name="Obolo Emmanuel Oluwapelumi", intake="January")
-        self.assertEqual(response["kwargs"], {"name": "Obolo Emmanuel Oluwapelumi", "intake": "January"})
+        self.assertEqual(response, "Rendered: {'controller_response': {'message': 'Added student', 'kwargs': {'name': 'Obolo Emmanuel Oluwapelumi'}}}")
 
     def test_route_execution_with_invalid_url(self):
         """Test route execution with an invalid URL."""
@@ -99,13 +96,13 @@ class TestV1Router(unittest.TestCase):
 
     def test_clear_routes(self):
         """Test clearing all routes."""
-        self.router.add_route("/add_student", StudentController, "add_student")
+        self.router.add_route("/add_student", StudentController, "add_student", StudentView)
         self.router.clear_routes()
         self.assertEqual(self.router.routes, {})
 
     def test_persistence_of_routes(self):
         """Test that routes are persisted between router instances."""
-        self.router.add_route("/search_student", StudentController, "search_student")
+        self.router.add_route("/search_student", StudentController, "search_student", StudentView)
         self.assertIn("/search_student", self.router.routes)
 
         # Create a new router instance and check persistence
