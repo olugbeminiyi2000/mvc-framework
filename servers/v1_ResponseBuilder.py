@@ -1,22 +1,27 @@
-def construct_http_response(status_code, body):
+def construct_http_response(status_code: int, body: bytes, content_type: str = "text/html") -> bytes:
     """
-    Constructs a full HTTP response.
+    Constructs a full HTTP response for both text and binary data.
 
     Args:
         status_code (int): The HTTP status code (e.g., 200, 404).
-        body (str): The response body.
+        body (bytes): The response body (can be binary).
         content_type (str): The content type of the response.
 
     Returns:
-        str: The formatted HTTP response.
+        bytes: The formatted HTTP response.
     """
-    response = (
-        f"HTTP/1.1 {status_code} OK\r\n"
+    status_messages = {200: "OK", 404: "Not Found", 500: "Internal Server Error"}
+    status_message = status_messages.get(status_code, "Unknown Status")
+
+    headers = (
+        f"HTTP/1.1 {status_code} {status_message}\r\n"
+        f"Content-Type: {content_type}\r\n"
         f"Content-Length: {len(body)}\r\n"
-        f"\r\n"
-        f"{body}"
-    )
-    return response
+        "Connection: close\r\n\r\n"
+    ).encode("utf-8")  # Convert headers to bytes
+
+    return headers + body  # Append headers and binary body
+
 
 
 def http_404_response():

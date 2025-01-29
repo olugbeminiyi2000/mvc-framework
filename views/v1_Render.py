@@ -4,10 +4,10 @@ import os
 
 def render_template(template_name: str, data: dict) -> str:
     """
-    Renders a template from the enforced 'static/' directory by replacing placeholders with values in `data`.
+    Renders a template from the enforced 'templates/' directory by replacing placeholders with values in `data`.
 
     Args:
-        template_name (str): The name of the template file (must be inside 'static/').
+        template_name (str): The name of the template file (must be inside 'templates').
         data (dict): A dictionary containing data to be replaced in the template.
 
     Returns:
@@ -15,23 +15,20 @@ def render_template(template_name: str, data: dict) -> str:
 
     Raises:
         FileNotFoundError: If the template file does not exist.
-        ValueError: If the template name attempts to escape the 'static/' directory.
+        ValueError: If the template name attempts to escape the 'templates' directory.
     """
     # Enforce static directory
-    static_dir = os.path.join(os.getcwd(), "static")  # Ensures absolute path
+    static_dir = os.path.join(os.getcwd(), "templates") # Ensures absolute path
     if ".." in template_name or template_name.startswith("/"):
-        raise ValueError("Invalid template name. Template must be inside 'static/' and not use '..' to escape.")
-
+        raise ValueError("Invalid template name. Template must be inside 'templates/' and not use '..' to escape.")
+    
     # Construct the full template file path
     filepath = os.path.join(static_dir, template_name)
-    print(filepath)
-
-    print(f"Looking for template: {filepath}")
 
     # Check if file exists
     if not os.path.exists(filepath):
         print("failed in finding file path")
-        raise FileNotFoundError(f"Template '{template_name}' not found in 'static/' directory.")
+        raise FileNotFoundError(f"Template '{template_name}' not found in 'templates/' directory.")
 
     try:
         # Read the template file content
