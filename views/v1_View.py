@@ -13,9 +13,9 @@ class V1BaseView(ABC):
         pass
 
     @staticmethod
-    def render_template(template_path: str, template_name: str, data: dict) -> str:
+    def render_template(template_name: str, data: dict) -> str:
         """Utility function to render templates."""
-        return render_template(template_path, template_name, data)
+        return render_template(template_name, data)
 
     @staticmethod
     def render_json(data: dict) -> str:

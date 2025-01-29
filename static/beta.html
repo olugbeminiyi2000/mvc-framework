@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .product {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .product img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .product h2 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .product p {
+            font-size: 14px;
+            color: #555;
+        }
+        .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product">
+            <img src="https://via.placeholder.com/250" alt="Product 1">
+            <h2>Wireless Headphones</h2>
+            <p>High-quality sound with noise cancellation.</p>
+            <p class="price">$99.99</p>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/250" alt="Product 2">
+            <h2>Smartwatch</h2>
+            <p>Track your fitness and stay connected on the go.</p>
+            <p class="price">$149.99</p>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/250" alt="Product 3">
+            <h2>Bluetooth Speaker</h2>
+            <p>Portable and powerful sound with deep bass.</p>
+            <p class="price">$79.99</p>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/250" alt="Product 4">
+            <h2>Gaming Mouse</h2>
+            <p>Ergonomic design with customizable buttons.</p>
+            <p class="price">$59.99</p>
+        </div>
+    </div>
+</body>
+</html>

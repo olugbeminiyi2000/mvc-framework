@@ -131,6 +131,7 @@ class V1Router:
 
             # Render the controller response using the associated view
             view_instance = view_class()
+            print(view_instance.render(controller_response=controller_response))
             return view_instance.render(controller_response=controller_response)
         else:
             raise ValueError(f"Route '{url}' not found.")

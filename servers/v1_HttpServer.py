@@ -26,10 +26,12 @@ def start_http_server(router: V1Router, host: str = "127.0.0.1", port: int = 808
                 try:
                     request_data: str = client_socket.recv(1024).decode("utf-8")
                     method, path, body = parse_http_request(request_data)
+                    print(method, path, body)
                     
                     # Process the route
                     try:
                         response_body: str = router.route(path, method=method, **body)
+                        print(response_body)
                         response: str = construct_http_response(200, response_body)
                     except ValueError:
                         response = http_404_response()
