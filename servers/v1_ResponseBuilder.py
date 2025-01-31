@@ -26,11 +26,11 @@ def construct_http_response(status_code: int, body: bytes, content_type: str = "
 
 def http_404_response():
     """Returns a 404 Not Found response."""
-    body = "<h1>404 Not Found</h1><p>The requested resource was not found.</p>"
+    body = b'<h1>404 Not Found</h1><p>The requested resource was not found.</p>'
     return construct_http_response(404, body)
 
 
 def http_500_response():
     """Returns a 500 Internal Server Error response."""
-    body = "<h1>500 Internal Server Error</h1><p>Something went wrong.</p>"
+    body = b'<h1>500 Internal Server Error</h1><p>Something went wrong.</p>'
     return construct_http_response(500, body)

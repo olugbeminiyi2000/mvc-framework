@@ -8,3 +8,17 @@ class ProductListView(V1BaseView):
         if kwargs["controller_response"] is None:
             kwargs = {}
         return self.render_template("beta.html", kwargs)
+    
+class ProductGetView(V1BaseView):
+    def __init__(self):
+        pass
+    def render(self, **kwargs):
+        if kwargs["controller_response"] is None:
+            kwargs = {}
+        return self.render_template("create.html", kwargs)
+    
+class ProductPostView(V1BaseView):
+    def __init__(self):
+        pass
+    def render(self, **kwargs):
+        pass
