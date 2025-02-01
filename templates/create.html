@@ -8,10 +8,39 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f4f4f9;
         }
-        form {
-            max-width: 400px;
+        .container {
+            max-width: 500px;
             margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .no_messgae {
+          display: none;  
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
         label {
             font-weight: bold;
@@ -20,43 +49,66 @@
         }
         input, textarea, select {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         button {
+            width: 100%;
             margin-top: 15px;
-            padding: 10px;
-            background-color: blue;
+            padding: 12px;
+            background-color: #007bff;
             color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h2>Product Information</h2>
-    <form action="/product/post_product" method="POST" enctype="application/x-www-form-urlencoded">
-        <label for="name">Product Name:</label>
-        <input type="text" id="name" name="name" required>
-        
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
-        
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" step="0.01" required>
-        
-        <label for="category">Category:</label>
-        <select id="category" name="category" required>
-            <option value="electronics">Electronics</option>
-            <option value="clothing">Clothing</option>
-            <option value="home">Home</option>
-            <option value="other">Other</option>
-        </select>
-        
-        <label for="image">Product Image:</label>
-        <input type="file" id="image" name="image" accept="image/*">
-        
-        <button type="submit">Submit Product</button>
-    </form>
+    <div class="container">
+        <h2>Product Information</h2>
+        <div class="message success">{{message}}</div>
+        <form action="/product/post_product" method="POST" enctype="multipart/form-data">
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+            
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+            
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="electronics">Electronics</option>
+                <option value="clothing">Clothing</option>
+                <option value="home">Home</option>
+                <option value="other">Other</option>
+            </select>
+            
+            <label for="image">Product Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            
+            <button type="submit">Submit Product</button>
+        </form>
+    </div>
+<script>
+    const messageBox = document.querySelector(".message")
+    if (!messageBox.textContent) {
+        messageBox.classList.remove("message")
+        messageBox.classList.remove("success")
+        messageBox.classList.add("no_message")
+    } else {
+        messageBox.classList.remove("no_message")
+        messageBox.classList.add("message")
+        messageBox.classList.add("success")
+    }
+</script>
 </body>
 </html>

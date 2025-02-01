@@ -1,6 +1,6 @@
 from controllers.v1_Controller import V1AbstractController
 from models.v1_Model import V1Model
-from typing import Dict
+from typing import Dict, Any
 
 class ProductController(V1AbstractController):
     def __init__(self):
@@ -17,9 +17,14 @@ class ProductController(V1AbstractController):
         return None
     
     def product_create_post(self, **kwargs: Dict):
-        print(kwargs)
-        database = V1Model()
-        product_list = database.get_key_value("product_list")
+        database: V1Model = V1Model()
+        product_list: list[dict[str, Any]] | None = database.get_key_value("product_list")
         if product_list is None:
-            pass
-        pass
+            product_list = []
+            product_list.append(kwargs)
+            database.add_key_value("product_list", product_list)
+        else:
+            product_list.append(kwargs)
+            database.update_key_value(product_list=product_list)
+        message = "new product {} added sucessfully".format(kwargs.get("name"))
+        return {"message": message}

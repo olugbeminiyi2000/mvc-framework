@@ -1,5 +1,11 @@
 import json
 import os
+import re
+
+
+def clean_unmatched_placeholders(template: str) -> str:
+    return re.sub(r'{{\s*\w+\s*}}', '', template)
+
 
 
 def render_template(template_name: str, data: dict) -> str:
@@ -37,8 +43,11 @@ def render_template(template_name: str, data: dict) -> str:
 
         # Replace placeholders with values from data
         for key, value in data.items():
-            placeholder = f"{{{{ {key} }}}}"  # Correct format for placeholders
-            file_string = file_string.replace(placeholder, str(value))
+            pattern = re.compile(r'{{\s*' + re.escape(key) + r'\s*}}')
+            file_string = pattern.sub(str(value), file_string)
+
+        # clean unmatched place holders
+        file_string = clean_unmatched_placeholders(file_string)
 
         print("Template successfully rendered.")
         return file_string

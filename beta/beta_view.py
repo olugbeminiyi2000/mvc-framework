@@ -21,4 +21,8 @@ class ProductPostView(V1BaseView):
     def __init__(self):
         pass
     def render(self, **kwargs):
-        pass
+        if kwargs["controller_response"] is None:
+            kwargs = {}
+        else:
+            kwargs = kwargs["controller_response"]
+        return self.render_template("create.html", kwargs)
