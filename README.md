@@ -15,7 +15,7 @@ This documentation details the core components of the framework and demonstrates
 
 ## 1. Framework Components
 
-### 1.1 **Controllers (`v1_controller.py`)**
+### 1.1 **Controllers (`v1_Controller.py`)**
 The `V1AbstractController` class enforces a structured approach to controllers while allowing flexibility in defining CRUD operations.
 
 #### How It Works
@@ -24,7 +24,7 @@ The `V1AbstractController` class enforces a structured approach to controllers w
 
 ---
 
-### 1.2 **Logging (`v1_logging.py`)**
+### 1.2 **Logging (`v1_Logging.py`)**
 The logging module provides structured logs for debugging and monitoring.
 
 #### Features:
@@ -33,7 +33,7 @@ The logging module provides structured logs for debugging and monitoring.
 
 ---
 
-### 1.3 **Transaction Management (`v1_transaction.py`)**
+### 1.3 **Transaction Management (`v1_Transaction.py`)**
 Handles atomic data operations to maintain integrity.
 
 #### Features:
@@ -42,7 +42,7 @@ Handles atomic data operations to maintain integrity.
 
 ---
 
-### 1.4 **Validation (`v1_validation.py`)**
+### 1.4 **Validation (`v1_Validation.py`)**
 Provides input validation for key-value pairs.
 
 #### Features:
@@ -51,7 +51,7 @@ Provides input validation for key-value pairs.
 
 ---
 
-### 1.5 **Model (`v1_model.py`)**
+### 1.5 **Model (`v1_Model.py`)**
 Manages application data and enforces validation rules.
 
 #### Features:
@@ -61,7 +61,7 @@ Manages application data and enforces validation rules.
 
 ---
 
-### 1.6 **Routing (`v1_router.py`)**
+### 1.6 **Routing (`v1_Router.py`)**
 Maps URLs to controllers and views dynamically.
 
 #### How It Works
@@ -70,7 +70,7 @@ Maps URLs to controllers and views dynamically.
 
 ---
 
-### 1.7 **View Layer (`v1_view.py`)**
+### 1.7 **View Layer (`v1_View.py`)**
 Handles rendering JSON and HTML templates.
 
 #### How It Works
@@ -80,7 +80,7 @@ Handles rendering JSON and HTML templates.
 
 ---
 
-### 1.8 **HTTP Request Parsing (`v1_requestparser.py`)**
+### 1.8 **HTTP Request Parsing (`v1_RequestParser.py`)**
 Extracts relevant data from incoming HTTP requests.
 
 #### Features:
@@ -90,7 +90,7 @@ Extracts relevant data from incoming HTTP requests.
 
 ---
 
-### 1.9 **Response Builder (`v1_responsebuilder.py`)**
+### 1.9 **Response Builder (`v1_ResponseBuilder.py`)**
 Constructs structured HTTP responses for client requests.
 
 #### Features:
@@ -100,7 +100,7 @@ Constructs structured HTTP responses for client requests.
 
 ---
 
-### 1.10 **File Upload Handling (`v1_uploadtoserver.py`)**
+### 1.10 **File Upload Handling (`v1_UploadToServer.py`)**
 Processes and saves uploaded files to a structured directory.
 
 #### Features:
@@ -109,7 +109,7 @@ Processes and saves uploaded files to a structured directory.
 
 ---
 
-### 1.11 **HTTP Server (`v1_httpserver.py`)**
+### 1.11 **HTTP Server (`v1_HttpServer.py`)**
 Acts as a lightweight web server to process requests.
 
 #### Features:
@@ -118,51 +118,6 @@ Acts as a lightweight web server to process requests.
 - **Routes requests to the appropriate controller**.
 
 ---
-
-## 2. Building a Simple Web App
-
-### Step 1: Define a Controller
-Create a controller that processes user requests.
-
-### Step 2: Define a View
-Create a view that handles rendering the response.
-
-### Step 3: Register the Route
-Define the route in the `v1_router.py` file.
-
-### Step 4: Start the Server
-Run the following command to start the server:
-```
-python -m servers.v1_runserver
-```
-
-### Step 5: Register the Routes
-Before starting the server, ensure you run the file responsible for registering routes:
-```
-python path/to/your/route_registration_file.py
-```
-
-### Step 6: Access the Web App
-Run the server and visit `http://127.0.0.1:8080/hello`.
-
----
-
-## Conclusion
-The **V1 MVC Framework** was built as a learning project to explore MVC principles by developing a fully functional small-scale framework. It covers essential features like **routing, transactions, request handling, and views** while maintaining simplicity. This framework serves as an excellent tool for gaining hands-on experience with MVC-based development.
-
-### Understanding the Flow
-1. **Client sends a request** → `/hello`.
-2. **Router matches the request** and calls `HelloController.hello()`.
-3. **Controller processes logic** and returns `"Hello, World!"`.
-4. **Router sends the response** to `HelloView.render()` as a `kwarg`.
-5. **View processes the response** and returns `"<h1>Hello, World!</h1>"`.
-6. **The rendered response is sent** to the client’s browser.
-
-If a **view does not return anything**, no content will be displayed.
-
-This flow ensures a **clear separation of concerns** between routing, controller logic, and rendering views.
-
-
 
 ## 2. Building a Simple Web App
 
@@ -242,11 +197,3 @@ If a **view does not return anything**, no content will be displayed.
 
 This flow ensures a **clear separation of concerns** between routing, controller logic, and rendering views.
 
-
-
-
-# Note to run tests for each compartment
-```bash
-    echo "" > v1_model.json
-    pytest models/tests/ routers/tests/
-```
