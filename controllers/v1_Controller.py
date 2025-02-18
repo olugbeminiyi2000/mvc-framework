@@ -2,9 +2,8 @@ from abc import ABC, abstractmethod
 
 class V1AbstractController(ABC):
     """
-    Abstract base class for controllers to enforce CRUD operations.
-    All methods can accept **kwargs as the second and only arguement
-    after self.
+    Abstract base class for controllers to enforce their initialization.
+    while still giving user's the flexiblity to create their own crud operations
     """
 
     @abstractmethod
