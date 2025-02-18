@@ -1,11 +1,11 @@
+import os
+from pathlib import Path
 import re
 from routers.v1_Router import V1Router
 from servers.v1_RequestParser import parse_http_request
 from servers.v1_ResponseBuilder import construct_http_response, http_404_response, http_500_response
 from servers.v1_UploadToServer import handle_file_uploads
 import socket
-import os
-from pathlib import Path
 from typing import Type, Optional, Tuple
 
 server_socket: Optional[socket.socket] = None

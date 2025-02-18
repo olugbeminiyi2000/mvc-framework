@@ -502,3 +502,11 @@
 2025-01-24 16:17:10,052 - ERROR - Key 'age' not found for deletion: 'age'
 2025-01-24 16:17:10,052 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
 2025-01-24 16:17:10,062 - ERROR - Key 'highschool' not found for deletion: 'highschool'
+2025-02-18 22:19:01,529 - ERROR - Some operations have failed, rolling back the transaction.
+2025-02-18 22:19:01,561 - ERROR - Key 'dog_species' not found for deletion: 'dog_species'
+2025-02-18 22:19:01,637 - ERROR - Unsupported action: submit in batch operation.
+2025-02-18 22:19:01,637 - ERROR - Unsupported action: annotate in batch operation.
+2025-02-18 22:19:01,641 - ERROR - Failed to execute update on height: 'float' object has no attribute 'height'
+2025-02-18 22:19:01,641 - ERROR - Key 'age' not found for deletion: 'age'
+2025-02-18 22:19:01,641 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
+2025-02-18 22:19:01,671 - ERROR - Key 'highschool' not found for deletion: 'highschool'

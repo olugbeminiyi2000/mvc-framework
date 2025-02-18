@@ -18,11 +18,12 @@ class V1Model:
     """
     DEFAULT_FILE_PATH = "model_state.pkl"
 
-    def __init__(self):
+    def __init__(self, file_path="v1_model.json"):
         """
         Initializes the model by reading existing data from the file and initializing validation rules.
         """
         self.file_path = self.DEFAULT_FILE_PATH
+        self.json_file_path = file_path
         self.read_data_from_file()
         self._validation_rules: Dict[str, Dict[str, Any]] = self._load_or_initialize_custom_validation_rules()
 
@@ -174,7 +175,7 @@ class V1Model:
         If the file does not exist or is invalid, an empty dictionary is used.
         """
         try:
-            with open("v1_model.json", mode='r', encoding="utf-8") as fp:
+            with open(self.json_file_path, mode='r', encoding="utf-8") as fp:
                 self._data = json.load(fp)
         except FileNotFoundError:
             self._data = {}
@@ -190,7 +191,7 @@ class V1Model:
             temp_file = "v1_model.tmp"
             with open(temp_file, mode='w', encoding="utf-8") as fp:
                 json.dump(self._data, fp)
-            os.replace(temp_file, "v1_model.json")
+            os.replace(temp_file, self.json_file_path)
         except Exception as e:
             logging.error("Failed to write data: %s", e)
 
