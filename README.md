@@ -157,8 +157,8 @@ Define the route in the `v1_router.py` file.
 ```python
 # File - webapp_name.hello_router.py
 
-from webapp.beta_view import HelloView
-from webapp.hello_controller import HelloController
+from webapp_name.beta_view import HelloView
+from webapp_name.hello_controller import HelloController
 from routers.v1_Router import V1Router
 router = V1Router()
 router.add_route("/hello", HelloController, "hello", HelloView)
