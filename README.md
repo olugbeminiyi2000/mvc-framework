@@ -20,7 +20,7 @@ The `V1AbstractController` class enforces a structured approach to controllers w
 
 #### How It Works
 - All controllers **inherit** from `V1AbstractController` and must implement `__init__`.
-- A controller method processes the data received from the body(**kwargs**) of the request and **returns a response**, which is passed to the view, as a kwargs `controller_response=response`, .
+- A controller method processes the data received from the body(**kwargs**) of the request and **returns a response**, which is passed to the view, as a kwargs `controller_response=response`.
 
 ---
 
