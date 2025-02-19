@@ -168,7 +168,7 @@ router.add_route("/hello", HelloController, "hello", HelloView)
 ### Step 4: Register the Routes
 Before starting the server, ensure you run the file responsible for registering routes:
 ```
-python hello_router.py
+python -m webapp_name.hello_router
 ```
 
 ### Step 5: Start the Server
