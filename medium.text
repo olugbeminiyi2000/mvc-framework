@@ -1,0 +1,241 @@
+# **Building My Own MVC Framework from Scratch – A Deep Dive into Web Architecture**
+
+## **Introduction**
+Frameworks like Django, Flask, Express.js, and Laravel make web development seamless. They abstract the complexity behind request handling, routing, controllers, and data persistence. But how do these frameworks work internally? What happens when a request hits a server? How do controllers, models, and views interact? 
+
+I wanted **a hands-on learning experience**, so I **built my own MVC framework from scratch**. This wasn’t about creating a production-ready tool but **understanding the underlying architecture** of web frameworks.
+
+In this post, I’ll walk you through **how I structured my MVC framework, the thought process behind each component, and how everything fits together**.
+
+---
+
+## **What is MVC?**
+Before diving into the implementation, let’s establish **what MVC (Model-View-Controller) means**.
+
+✅ **Model** – Manages the data and business logic.  
+✅ **View** – Handles the presentation of data.  
+✅ **Controller** – Interacts with models, processes input, and passes the data to views.
+
+MVC ensures **separation of concerns**, making web applications more modular, scalable, and maintainable.
+
+---
+
+## **Understanding the Core Components of My MVC Framework**
+Each part of my framework was designed to mirror the **fundamental structure of existing MVC frameworks** while keeping things lightweight and simple.
+
+---
+
+## **1. Controllers – The Brains of the Application**
+The **Controller** is responsible for **handling requests, processing logic, and returning responses**. 
+
+### **How It Works**
+- **Each controller inherits from `V1AbstractController`** to enforce consistency.
+- **Controllers process logic and return a response**.
+- The **response is passed as a `kwarg` to the corresponding view**.
+
+### **Implementation**
+```python
+from controllers.v1_Controller import V1AbstractController
+
+class HelloController(V1AbstractController):
+    def __init__(self):
+        pass
+    
+    def hello(self, **kwargs):
+        return "Hello, World!"
+```
+
+👉 When a request is made to `/hello`, the `HelloController` processes it and returns `"Hello, World!"`.
+
+---
+
+## **2. Routing – Mapping URLs to Controllers**
+The **Router** determines which controller should handle a request.
+
+### **How It Works**
+1. The router **stores route definitions**.
+2. When a request comes in, it **matches the URL to the correct controller and method**.
+3. It then **passes the request to the controller and receives a response**.
+4. Finally, it **sends the response to the designated view**.
+
+### **Implementation**
+```python
+router = V1Router()
+router.add_route("/hello", HelloController, "hello", HelloView)
+```
+👉 Here, **the `/hello` route is linked to `HelloController.hello()` and `HelloView`**.
+
+---
+
+## **3. Views – Formatting the Response**
+The **View** is responsible for rendering the final output, whether it’s **HTML, JSON, or another format**.
+
+### **How It Works**
+- **Views inherit from `V1BaseView`**.
+- They **receive the controller’s response as a `kwarg`**.
+- They **must return a formatted response**, or nothing will be displayed.
+
+### **Implementation**
+```python
+from views.v1_View import V1BaseView
+
+class HelloView(V1BaseView):
+    def __init__(self):
+        pass
+    
+    def render(self, controller_response):
+        return f"<h1>{controller_response}</h1>"
+```
+
+👉 The `HelloView` receives **"Hello, World!"** from the controller and formats it into an HTML `<h1>` tag.
+
+---
+
+## **4. Model – Managing Data**
+The **Model** is responsible for **handling structured data**, ensuring **data validation, storage, and retrieval**.
+
+### **How It Works**
+- **Data is stored and retrieved from JSON files** (acting as a lightweight database).
+- **Validation rules are enforced** to ensure data integrity.
+- **Transactions are supported**, allowing atomic operations.
+
+### **Implementation**
+```python
+class V1Model:
+    def __init__(self, file_path="v1_model.json"):
+        self.file_path = file_path
+        self.read_data_from_file()
+    
+    def read_data_from_file(self):
+        try:
+            with open(self.file_path, "r") as file:
+                self._data = json.load(file)
+        except (FileNotFoundError, JSONDecodeError):
+            self._data = {}
+```
+
+👉 The model **loads and manages structured data**, ensuring that controllers work with validated input.
+
+---
+
+## **5. Handling HTTP Requests**
+Since I wasn’t using an existing web framework, I had to **manually parse HTTP requests**.
+
+### **How It Works**
+- The **request parser extracts the method (GET, POST), path, and request body**.
+- It **supports form data and file uploads**.
+- **Raw HTTP data is processed and formatted** into a structured dictionary.
+
+### **Implementation**
+```python
+def parse_http_request(request_data: str):
+    method, path, body = request_data.split(" ", 2)
+    return method, path, parse_qs(body)
+```
+
+👉 This ensures that **controllers receive structured request data**.
+
+---
+
+## **6. Constructing HTTP Responses**
+To ensure **proper communication between client and server**, the response format must be **structured and standardized**.
+
+### **How It Works**
+- **Each response includes status codes (`200`, `404`, `500`)**.
+- **Content type is set** dynamically (HTML, JSON, binary).
+- **Headers and response bodies are formatted properly**.
+
+### **Implementation**
+```python
+def construct_http_response(status_code, body, content_type="text/html"):
+    headers = (
+        f"HTTP/1.1 {status_code} OK\r\n"
+        f"Content-Type: {content_type}\r\n"
+        f"Content-Length: {len(body)}\r\n\r\n"
+    )
+    return headers.encode() + body.encode()
+```
+
+👉 This ensures that **every response is properly structured**.
+
+---
+
+## **7. File Uploads – Handling Media**
+Web applications often need **file upload support**, so I implemented a dedicated module to **securely handle and store files**.
+
+### **How It Works**
+- **Uploaded files are categorized** based on extension.
+- **They are stored securely**, preventing unwanted overwrites.
+- **File information is validated** before storage.
+
+### **Implementation**
+```python
+def save_uploaded_file(file_info):
+    filename = file_info["filename"]
+    file_path = f"uploads/{filename}"
+    
+    with open(file_path, "wb") as f:
+        f.write(file_info["data"])
+    
+    return file_path
+```
+
+👉 This ensures **secure and structured file storage**.
+
+---
+
+## **Bringing It All Together – A Simple Web App**
+Now that we have our core components, let’s build a **basic web app** using the framework!
+
+### **Step 1: Define a Controller**
+```python
+class HelloController(V1AbstractController):
+    def __init__(self):
+        pass
+    
+    def hello(self, **kwargs):
+        return "Hello, World!"
+```
+
+### **Step 2: Define a View**
+```python
+class HelloView(V1BaseView):
+    def __init__(self):
+        pass
+    
+    def render(self, controller_response):
+        return f"<h1>{controller_response}</h1>"
+```
+
+### **Step 3: Register the Route**
+```python
+router = V1Router()
+router.add_route("/hello", HelloController, "hello", HelloView)
+```
+
+### **Step 4: Start the Server**
+```
+python -m servers.v1_runserver
+```
+
+### **Step 5: Visit the Web App**
+Once the server is running, open a browser and visit:
+```
+http://127.0.0.1:8080/hello
+```
+
+🚀 **You should see "Hello, World!" displayed!**
+
+---
+
+## **Final Thoughts**
+Building this MVC framework gave me **deep insights into how web applications are structured**. I now understand:
+- **How HTTP requests are processed**
+- **How routing maps requests to controllers**
+- **How views render dynamic content**
+- **How data validation works inside models**
+- **How transactions and file handling are implemented**
+
+If you’ve ever wondered **how web frameworks work internally**, I highly recommend building one yourself! 💡
+
+Would you like to see **more in-depth tutorials** on MVC architecture? Let me know in the comments! 🚀
