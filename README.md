@@ -20,7 +20,7 @@ The `V1AbstractController` class enforces a structured approach to controllers w
 
 #### How It Works
 - All controllers **inherit** from `V1AbstractController` and must implement `__init__`.
-- A controller method processes input and **returns a response** as a `string: kwargs`, which is passed to the view.
+- A controller method processes the data received from the body(**kwargs**) of the request and **returns a response**, which is passed to the view, as a kwargs `controller_response=response`, .
 
 ---
 
@@ -124,7 +124,7 @@ Acts as a lightweight web server to process requests.
 ### Step 1: Define a Controller
 Create a controller that processes user requests.
 ```python
-# File - webapp.hello_controller.py
+# File - webapp_name.hello_controller.py
 
 from controllers.v1_Controller import V1AbstractController
 
@@ -139,7 +139,7 @@ class HelloController(V1AbstractController):
 ### Step 2: Define a View
 Create a view that handles rendering the response.
 ```python
-# File - webapp.hello_view.py
+# File - webapp_name.hello_view.py
 
 from views.v1_View import V1BaseView
 
@@ -155,7 +155,7 @@ class HelloView(V1BaseView):
 ### Step 3: Register the Route
 Define the route in the `v1_router.py` file.
 ```python
-# File - webapp.hello_router.py
+# File - webapp_name.hello_router.py
 
 from webapp.beta_view import HelloView
 from webapp.hello_controller import HelloController
