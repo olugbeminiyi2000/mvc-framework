@@ -8,7 +8,7 @@ from views.v1_View import V1BaseView
 
 class V1Router:
     DEFAULT_FILE_PATH = "router_state.pkl"
-    _shared_routes: Dict[str, Tuple[Type[V1AbstractController], str, Type[V1BaseView]]] = {}
+    _shared_routes: Dict[str, Tuple[Type[V1AbstractController], str, Type[V1BaseView], str]] = {}
 
     def __init__(self, file_path: Optional[str] = None):
         self.file_path = file_path or self.DEFAULT_FILE_PATH
@@ -17,7 +17,7 @@ class V1Router:
             V1Router._shared_routes = self._load_or_initialize_routes()
 
     @property
-    def routes(self) -> Dict[str, Tuple[Type[V1AbstractController], str, Type[V1BaseView]]]:
+    def routes(self) -> Dict[str, Tuple[Type[V1AbstractController], str, Type[V1BaseView], str]]:
         """Provides access to the shared routes."""
         return V1Router._shared_routes
 
@@ -33,7 +33,7 @@ class V1Router:
                 os.remove(temp_file)
             raise RuntimeError(f"Failed to save Router state: {e}")
 
-    def _load_or_initialize_routes(self) -> Dict[str, Tuple[Type[V1AbstractController], str, Type[V1BaseView]]]:
+    def _load_or_initialize_routes(self) -> Dict[str, Tuple[Type[V1AbstractController], str, Type[V1BaseView], str]]:
         """Loads the Router state from file or initializes a new one if the file does not exist."""
         if os.path.exists(self.file_path):
             try:
@@ -81,7 +81,7 @@ class V1Router:
                     f"Invalid parameter: '{name}'."
                 )
 
-    def add_route(self, route: str, controller_class: Type[V1AbstractController], action_name: str, view_class: Type[V1BaseView]):
+    def add_route(self, route: str, controller_class: Type[V1AbstractController], action_name: str, view_class: Type[V1BaseView], http_method: str = "GET"):
         """
         Adds a route to the router.
 
@@ -90,21 +90,28 @@ class V1Router:
             controller_class (Any): The controller class.
             action_name (str): The name of the action method.
             view_class (Type[V1BaseView]): The view class to render the result.
+            http_method (str): The HTTP method (e.g., "GET", "POST"). Defaults to "GET".
 
         Raises:
             RuntimeError: If the route cannot be added due to validation errors.
+            ValueError: If the http_method is not allowed.
         """
+        ALLOWED_METHODS = {"GET", "POST", "PUT", "DELETE", "PATCH"}
+        if http_method.upper() not in ALLOWED_METHODS:
+            raise ValueError(f"HTTP method '{http_method}' is not allowed. Allowed methods are: {', '.join(ALLOWED_METHODS)}")
+
         self.validate_controller_action(controller_class, action_name)
 
         # Ensure the view is a subclass of V1BaseView
         if not issubclass(view_class, V1BaseView):
             raise TypeError(f"View class '{view_class.__name__}' must inherit from 'V1BaseView'.")
 
-        # Store the route, controller, action, and view
-        V1Router._shared_routes[route] = (controller_class, action_name, view_class)
+        # Store the route, controller, action, view, and method
+        V1Router._shared_routes[route] = (controller_class, action_name, view_class, http_method.upper())
         self._atomic_save()
+        print(f"[V1_ROUTER] Added route: {http_method.upper()} {route}", flush=True) # Debug print
 
-    def route(self, url: str, method: str = "GET", **kwargs: Any) -> str:
+    def route(self, url: str, method: str = "GET", **kwargs: Any) -> Tuple[str, str]:
         """
         Routes a request to the appropriate controller action and renders the result with the associated view.
 
@@ -114,25 +121,31 @@ class V1Router:
             **kwargs (Any): Data to pass to the action as **kwargs.
 
         Returns:
-            str: The final result rendered by the view.
+            Tuple[str, str]: The final result rendered by the view and the content type from the view instance.
 
         Raises:
-            ValueError: If the route is not found.
+            ValueError: If the route is not found or the method is not supported.
         """
+        print(f"[V1_ROUTER] Attempting to route URL: {url}, Method: {method}", flush=True) # Debug print
+        print(f"[V1_ROUTER] Registered routes: {self.routes.keys()}", flush=True) # Debug print
         if url in V1Router._shared_routes:
-            controller_class, action_name, view_class = V1Router._shared_routes[url]
+            controller_class, action_name, view_class, stored_method = V1Router._shared_routes[url]
+
+            if stored_method != method.upper():
+                print(f"[V1_ROUTER] Method mismatch for {url}: Expected {stored_method}, Got {method.upper()}", flush=True) # Debug print
+                raise ValueError(f"Route '{url}' does not support HTTP method '{method.upper()}'. Expected '{stored_method}'.")
+
             controller_instance = controller_class()
             action_method = getattr(controller_instance, action_name)
 
-            if method.upper() in {"GET", "POST", "PUT", "DELETE", "PATCH"}:
-                controller_response = action_method(**kwargs)
-            else:
-                raise ValueError(f"HTTP method '{method.upper()}' not supported.")
+            # The method check is now done when adding the route and when routing
+            controller_response = action_method(**kwargs)
 
             # Render the controller response using the associated view
             view_instance = view_class()
-            return view_instance.render(controller_response=controller_response)
+            return view_instance.render(controller_response=controller_response), view_instance.content_type
         else:
+            print(f"[V1_ROUTER] Route '{url}' not found in registered routes.", flush=True) # Debug print
             raise ValueError(f"Route '{url}' not found.")
 
     def clear_routes(self) -> None:

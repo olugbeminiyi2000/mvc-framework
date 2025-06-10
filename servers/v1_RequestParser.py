@@ -1,6 +1,7 @@
 import re
 from typing import Tuple, Dict, Union
 from urllib.parse import parse_qs
+import json
 
 def parse_http_request(request_data: str) -> Tuple[str, str, Dict[str, Union[str, bytes]]]:
     """
@@ -17,6 +18,10 @@ def parse_http_request(request_data: str) -> Tuple[str, str, Dict[str, Union[str
             - body (dict): Contains text fields (str) and file data (bytes).
     """
     try:
+        # Skip empty requests
+        if not request_data or not request_data.strip():
+            return "", "", {}
+
         # Split headers and body
         if "\r\n\r\n" not in request_data:
             raise ValueError("Malformed request, no headers found")
@@ -30,6 +35,10 @@ def parse_http_request(request_data: str) -> Tuple[str, str, Dict[str, Union[str
             raise ValueError("Malformed request line")
 
         method, path = request_line[:2]
+
+        # Skip requests for favicon.ico and other browser-generated requests
+        if path == "/favicon.ico" or not path.startswith("/"):
+            return "", "", {}
 
         # Extract headers
         header_dict = {}
@@ -86,6 +95,14 @@ def parse_http_request(request_data: str) -> Tuple[str, str, Dict[str, Union[str
                     }
                 else:  # Text field
                     body[field_name] = body_part.strip()
+
+        elif "application/json" in content_type:
+            # Handle JSON data
+            try:
+                if raw_body:
+                    body.update(json.loads(raw_body))
+            except json.JSONDecodeError as e:
+                raise ValueError(f"Invalid JSON in request body: {e}")
 
         elif "application/x-www-form-urlencoded" in content_type or not content_type:
             # Handle application/x-www-form-urlencoded or no Content-Type

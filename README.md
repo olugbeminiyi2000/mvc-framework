@@ -197,3 +197,7 @@ If a **view does not return anything**, no content will be displayed.
 
 This flow ensures a **clear separation of concerns** between routing, controller logic, and rendering views.
 
+```cmd
+netstat -ano | findstr :8080
+taskkill /PID [PID_NUMBER] /F
+```

@@ -3,9 +3,21 @@ from views.v1_Render import render_json, render_template
 
 
 class V1BaseView(ABC):
+    # Centralized Content-Type definitions
+    CONTENT_TYPES = {
+        "HTML": "text/html",
+        "JSON": "application/json",
+        "PLAIN": "text/plain",
+        "XML": "application/xml",
+        "PDF": "application/pdf",
+        # Add more as needed
+    }
+    
+    content_type: str =  "text/html"
+
     @abstractmethod
     def __init__(self):
-        pass
+        pass # Subclasses must implement this, but no specific content_type assignment here.
 
     @abstractmethod
     def render(self, **kwargs) -> str:
