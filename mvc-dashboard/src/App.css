@@ -32,6 +32,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -64,9 +65,10 @@
 }
 
 .dashboard-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  color: #fff;
+  color: #ffffff;
+  font-family: monospace;
 }
 
 .sidebar-nav {
@@ -126,19 +128,23 @@
 .filetree-root {
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   padding: 1rem;
   margin-bottom: 2rem;
 }
+
 .filetree-header {
   font-size: 1.1rem;
   font-weight: 600;
   color: #222;
   margin-bottom: 1rem;
+  font-family: monospace;
 }
+
 .filetree-list {
   margin-top: 0.5rem;
 }
+
 .filetree-dir {
   display: flex;
   align-items: center;
@@ -147,24 +153,29 @@
   border-radius: 4px;
   transition: background 0.2s;
 }
+
 .filetree-dir:hover {
   background: #f3f4f6;
 }
+
 .filetree-chevron {
   width: 1rem;
   height: 1rem;
   color: #888;
 }
+
 .filetree-folder {
   width: 1rem;
   height: 1rem;
   color: #888;
   margin-left: 0.25rem;
 }
+
 .filetree-dirname {
   margin-left: 0.5rem;
   font-size: 0.98rem;
 }
+
 .filetree-file {
   display: flex;
   align-items: center;
@@ -174,33 +185,39 @@
   transition: background 0.2s;
   margin-left: 1.5rem;
 }
+
 .filetree-file:hover {
   background: #f3f4f6;
 }
+
 .filetree-doc {
   width: 1rem;
   height: 1rem;
   color: #888;
   margin-left: 1.25rem;
 }
+
 .filetree-filename {
   margin-left: 0.5rem;
   font-size: 0.98rem;
+  font-family: monospace;
 }
 
 .filetree-corefile {
-  background: #e0f2fe;
-  border-left: 4px solid #2563eb;
+  background: #e7fee0;
+  border-left: 4px solid #25eb3c;
 }
+
 .filetree-corefile-label {
-  background: #2563eb;
-  color: #fff;
+  background: #eb2525d9;
+  color: #010101;
   font-size: 0.75rem;
   border-radius: 4px;
   padding: 0.1rem 0.5rem;
   margin-left: 0.5rem;
   font-weight: 500;
 }
+
 .filetree-warning {
   display: flex;
   align-items: center;
@@ -213,6 +230,7 @@
   font-size: 0.98rem;
   gap: 0.5rem;
 }
+
 .filetree-warning-icon {
   width: 1.2rem;
   height: 1.2rem;
@@ -224,16 +242,19 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 1rem;
-  color: #2563eb;
+  color: #040404;
+  font-family: monospace;
   margin-bottom: 0.5rem;
   position: relative;
 }
+
 .filetree-info-icon-compact {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
   font-size: 1.2rem;
 }
+
 .filetree-tooltip {
   position: absolute;
   left: 2.2rem;
@@ -243,7 +264,7 @@
   color: #222;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   padding: 0.75rem 1.25rem;
   font-size: 0.98rem;
   min-width: 220px;
@@ -372,63 +393,76 @@
 }
 
 /* Ensure the Monaco editor container takes full height */
-.codeeditor-editor > div {
+.codeeditor-editor>div {
   height: 100%;
 }
 
 .servermanager-root {
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   margin-bottom: 2rem;
   padding-bottom: 1rem;
 }
+
 .servermanager-header {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #e5e7eb;
   font-size: 1.1rem;
   font-weight: 600;
   color: #222;
+  font-family: monospace;
 }
+
 .servermanager-body {
   padding: 1.5rem;
 }
+
 .servermanager-status-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .servermanager-status-indicator-row {
   display: flex;
   align-items: center;
 }
+
 .servermanager-status-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   display: inline-block;
 }
+
 .servermanager-status-dot-running {
   background: #22c55e;
 }
+
 .servermanager-status-dot-stopped {
   background: #ef4444;
 }
+
 .servermanager-status-label {
   margin-left: 0.5rem;
   font-size: 1rem;
   font-weight: 500;
   color: #222;
+  font-family: monospace;
 }
+
 .servermanager-port {
   margin-top: 0.25rem;
   font-size: 0.95rem;
   color: #888;
 }
+
 .servermanager-actions {
   display: flex;
   gap: 0.5rem;
 }
+
 .servermanager-btn {
   display: inline-flex;
   align-items: center;
@@ -440,41 +474,52 @@
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
+
 .servermanager-btn-icon {
   width: 1.1rem;
   height: 1.1rem;
   margin-right: 0.5rem;
 }
+
 .servermanager-btn-start {
   background: #22c55e;
   color: #fff;
+  font-family: monospace;
 }
+
 .servermanager-btn-start:hover {
   background: #16a34a;
 }
+
 .servermanager-btn-stop {
   background: #ef4444;
   color: #fff;
 }
+
 .servermanager-btn-stop:hover {
   background: #b91c1c;
 }
+
 .servermanager-btn-restart {
   background: #2563eb;
   color: #fff;
 }
+
 .servermanager-btn-restart:hover {
   background: #1d4ed8;
 }
+
 .servermanager-logs-section {
   margin-top: 2rem;
 }
+
 .servermanager-logs-header {
   font-size: 1rem;
   font-weight: 500;
   color: #444;
   margin-bottom: 0.5rem;
 }
+
 .servermanager-logs-box {
   background: #18181b;
   border-radius: 6px;
@@ -482,6 +527,7 @@
   height: 200px;
   overflow-y: auto;
 }
+
 .servermanager-logs-content {
   color: #d1d5db;
   font-family: monospace;
@@ -491,37 +537,52 @@
 .routedashboard-root {
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   margin-bottom: 2rem;
+  font-family: monospace;
 }
+
 .routedashboard-header {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #e5e7eb;
   font-size: 1.1rem;
   font-weight: 600;
   color: #222;
+  font-family: monospace;
 }
+
 .routedashboard-body {
   padding: 1.5rem;
+  font-family: monospace;
 }
+
 .routedashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: 2rem;
+  font-family: monospace;
 }
-.routedashboard-list-section {
-}
+
+
+.routedashboard-list-section {}
+
+
 .routedashboard-list-title {
   font-size: 1rem;
   font-weight: 500;
   color: #444;
   margin-bottom: 0.5rem;
+  font-family: monospace;
 }
+
+
 .routedashboard-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  font-family: monospace;
 }
+
 .routedashboard-list-item {
   background: #f9fafb;
   border: 1px solid #e5e7eb;
@@ -529,51 +590,72 @@
   padding: 0.75rem 1rem;
   cursor: pointer;
   transition: background 0.2s, border 0.2s;
+  font-family: monospace;
 }
+
 .routedashboard-list-item:hover {
   background: #f3f4f6;
+  font-family: monospace;
 }
+
 .routedashboard-list-item-active {
   background: #dbeafe;
   border: 1.5px solid #60a5fa;
+  font-family: monospace;
 }
+
 .routedashboard-list-item-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-family: monospace;
 }
+
 .routedashboard-list-path {
   font-weight: 500;
   color: #222;
 }
+
 .routedashboard-list-method {
   font-size: 0.95rem;
   color: #666;
+  font-family: monospace;
 }
+
 .routedashboard-list-meta {
   font-size: 0.92rem;
   color: #888;
   margin-top: 0.25rem;
+  font-family: monospace;
 }
+
 .routedashboard-test-section {
   overflow: hidden;
+  font-family: monospace;
 }
+
 .routedashboard-test-title {
   font-size: 1rem;
   font-weight: 500;
   color: #444;
   margin-bottom: 0.5rem;
+  font-family: monospace;
 }
+
 .routedashboard-test-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  font-family: monospace;
 }
+
 .routedashboard-test-label {
   font-size: 0.95rem;
   color: #444;
   margin-bottom: 0.25rem;
+  font-family: monospace;
 }
+
 .routedashboard-test-textarea {
   width: 100%;
   border-radius: 6px;
@@ -582,15 +664,23 @@
   font-size: 1rem;
   font-family: monospace;
   resize: vertical;
+  font-family: monospace;
 }
+
 .routedashboard-test-textarea.is-invalid {
-  border-color: #ef4444; /* Red border for invalid input */
+  border-color: #ef4444;
+  font-family: monospace;
+  /* Red border for invalid input */
 }
+
 .routedashboard-json-error {
-  color: #ef4444; /* Red text for error message */
+  color: #ef4444;
+  /* Red text for error message */
   font-size: 0.85rem;
   margin-top: 0.5rem;
+  font-family: monospace;
 }
+
 .routedashboard-test-btn {
   background: #2563eb;
   color: #fff;
@@ -601,18 +691,26 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
+  font-family: monospace;
 }
+
 .routedashboard-test-btn:hover {
   background: #1d4ed8;
+  font-family: monospace;
 }
+
 .routedashboard-test-placeholder {
   color: #888;
   font-size: 16px;
   margin-top: 1rem;
+  font-family: monospace;
 }
+
 .routedashboard-response-section {
   margin-top: 1rem;
+  font-family: monospace;
 }
+
 .routedashboard-response-title {
   font-size: 1rem;
   font-weight: 500;
@@ -620,45 +718,67 @@
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
+  font-family: monospace;
 }
+
 .routedashboard-response-box {
   background: #f3f4f6;
   border-radius: 6px;
   padding: 1rem;
-  width: 100%; /* Ensure the box takes full available width */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  overflow: hidden; /* Ensure content is contained within this box */
+  width: 100%;
+  /* Ensure the box takes full available width */
+  box-sizing: border-box;
+  /* Include padding and border in the element's total width and height */
+  overflow: hidden;
+  /* Ensure content is contained within this box */
+  font-family: monospace;
 }
+
 .routedashboard-response-status {
   font-weight: 500;
   color: #2563eb;
+  font-family: monospace;
 }
+
 .routedashboard-response-body {
   margin-top: 0.5rem;
   font-family: monospace;
   font-size: 0.98rem;
   color: #222;
   overflow-x: auto;
+  font-family: monospace;
 }
+
 .routedashboard-response-view {
   margin-top: 1rem;
+  font-family: monospace;
 }
+
 .routedashboard-response-view-title {
   font-weight: 500;
   color: #444;
   display: flex;
   align-items: center;
+  font-family: monospace;
 }
+
 .routedashboard-response-view-box {
-  background-color: #fff3e0; /* Light orange background for view output */
+  background-color: #fff3e0;
+  /* Light orange background for view output */
   border: 1px solid #ffcc80;
   border-radius: 4px;
   padding: 10px;
-  width: 100%; /* Ensure the box takes full available width */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  max-height: 300px; /* Limit height for overflow */
-  overflow-y: auto; /* Enable vertical scrolling */
-  overflow-x: auto; /* Enable horizontal scrolling */
+  width: 100%;
+  /* Ensure the box takes full available width */
+  box-sizing: border-box;
+  /* Include padding and border in the element's total width and height */
+  max-height: 300px;
+  /* Limit height for overflow */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+  overflow-x: auto;
+  /* Enable horizontal scrolling */
+  font-family: monospace;
 }
 
 .routedashboard-open-new-tab-btn {
@@ -678,6 +798,7 @@
   transition: background-color 0.2s;
   overflow: visible;
   margin-bottom: 10px;
+  font-family: monospace;
 }
 
 .routedashboard-open-new-tab-btn:hover {
@@ -685,19 +806,26 @@
 }
 
 .routedashboard-refresh-btn {
-  background: #2563eb; /* A primary blue color */
+  background: #2563eb;
+  /* A primary blue color */
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 0.4rem 1rem; /* Slightly more padding */
-  font-size: 0.9rem; /* Slightly larger font */
+  padding: 0.4rem 1rem;
+  /* Slightly more padding */
+  font-size: 0.9rem;
+  /* Slightly larger font */
   cursor: pointer;
   transition: background 0.2s;
-  margin-left: 10px; /* Add some left margin to separate from title */
+  margin-left: 10px;
+  margin-top: 10px;
+  font-family: monospace;
+  /* Add some left margin to separate from title */
 }
 
 .routedashboard-refresh-btn:hover {
-  background: #1d4ed8; /* Darker blue on hover */
+  background: #1d4ed8;
+  /* Darker blue on hover */
 }
 
 .webappselector-root {
@@ -705,11 +833,15 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 2rem;
+  font-family: monospace;
 }
+
 .webappselector-label {
   font-weight: 500;
   color: #222;
+  font-family: fantasy;
 }
+
 .webappselector-dropdown {
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -717,20 +849,24 @@
   font-size: 1rem;
   background: #fff;
   color: #222;
+  font-family: monospace;
 }
+
 .webappselector-create {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
+
 .webappselector-input {
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: 1px solid #e5e7eb;
   font-size: 1rem;
 }
+
 .webappselector-btn {
-  background: #2563eb;
+  background: #21ad14eb;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -739,10 +875,13 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
+  font-family: monospace;
 }
+
 .webappselector-btn:hover {
-  background: #1d4ed8;
+  background: #1b5516eb;
 }
+
 .webappselector-btn-cancel {
   background: #e5e7eb;
   color: #222;
@@ -754,6 +893,7 @@
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .webappselector-btn-cancel:hover {
   background: #d1d5db;
 }
@@ -786,7 +926,7 @@ body {
 
 .sidebar {
   width: 250px;
-  background-color: #2c3e50;
+  background-color: #111111;
   color: white;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -798,17 +938,23 @@ body {
 }
 
 .sidebar-nav button {
-  display: block;
+  display: flex;
   width: 100%;
   padding: 10px 15px;
   margin-bottom: 10px;
-  background-color: #34495e;
+  background-color: #7d858e;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   text-align: left;
+}
+
+.sidebar-btn-text {
+  display: inline-block;
+  font-family: fantasy;
+  font-weight: 100;
 }
 
 .sidebar-nav button:hover {
@@ -867,17 +1013,22 @@ body {
 }
 
 .btn-primary {
-  background-color: #3498db;
-  color: white;
+  background: #21ad14eb;
+  color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-family: monospace;
 }
 
 .btn-primary:hover {
-  background-color: #2980b9;
+  background: #1b5516eb;
+}
+
+.text-gray-500 {
+  font-family: monospace;
 }
 
 .btn-danger {
@@ -902,6 +1053,7 @@ body {
   padding: 0.75rem 1.25rem;
   border-radius: 0.25rem;
   margin-top: 10px;
+  font-family: monospace;
 }
 
 .message-error {
@@ -911,6 +1063,7 @@ body {
   padding: 0.75rem 1.25rem;
   border-radius: 0.25rem;
   margin-top: 10px;
+  font-family: monospace;
 }
 
 /* FileTree.tsx styles */
@@ -938,7 +1091,8 @@ body {
 .file-tree-item.selected {
   background-color: #e8f0fe;
   border-radius: 4px;
-  padding-left: 5px; /* Adjust padding for visual feedback */
+  padding-left: 5px;
+  /* Adjust padding for visual feedback */
 }
 
 .file-tree-item:hover {
@@ -978,9 +1132,11 @@ body {
   padding: 5px 0;
   position: absolute;
   z-index: 1;
-  bottom: 125%; /* Position the tooltip above the icon */
+  bottom: 125%;
+  /* Position the tooltip above the icon */
   left: 50%;
-  margin-left: -125px; /* Center the tooltip */
+  margin-left: -125px;
+  /* Center the tooltip */
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -988,7 +1144,8 @@ body {
 .info-tooltip::after {
   content: "";
   position: absolute;
-  top: 100%; /* At the bottom of the tooltip */
+  top: 100%;
+  /* At the bottom of the tooltip */
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
@@ -1015,7 +1172,8 @@ body {
   margin-top: 20px;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
-  overflow: hidden; /* Ensures content within is contained */
+  overflow: hidden;
+  /* Ensures content within is contained */
 }
 
 .code-editor-header {
@@ -1056,8 +1214,10 @@ body {
 }
 
 .code-mirror-wrapper {
-  height: 400px; /* Fixed height for the editor */
-  overflow-y: auto; /* Enable vertical scrolling */
+  height: 400px;
+  /* Fixed height for the editor */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
 }
 
 /* ServerManager.tsx styles */
@@ -1079,15 +1239,18 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: grey; /* Default for unknown */
+  background-color: grey;
+  /* Default for unknown */
 }
 
 .status-indicator.running {
-  background-color: #28a745; /* Green */
+  background-color: #28a745;
+  /* Green */
 }
 
 .status-indicator.stopped {
-  background-color: #dc3545; /* Red */
+  background-color: #dc3545;
+  /* Red */
 }
 
 .server-actions button {
@@ -1132,21 +1295,28 @@ body {
   height: 200px;
   overflow-y: auto;
   font-family: 'Courier New', Courier, monospace;
-  white-space: pre-wrap; /* Ensures text wraps */
-  word-wrap: break-word; /* Break long words */
+  white-space: pre-wrap;
+  /* Ensures text wraps */
+  word-wrap: break-word;
+  /* Break long words */
 }
 
 /* RouteDashboard.tsx styles */
 .routes-container {
   display: flex;
-  flex-wrap: wrap; /* Allows items to wrap to next line */
+  flex-wrap: wrap;
+  /* Allows items to wrap to next line */
   gap: 20px;
+  font-family: monospace;
 }
 
 .available-routes-panel,
 .test-route-panel {
-  flex: 1; /* Distribute space equally */
-  min-width: 300px; /* Minimum width before wrapping */
+  flex: 1;
+  /* Distribute space equally */
+  min-width: 300px;
+  /* Minimum width before wrapping */
+  font-family: monospace;
 }
 
 .route-item {
@@ -1156,30 +1326,36 @@ body {
   border-radius: 5px;
   cursor: pointer;
   border: 1px solid #dee2e6;
+  font-family: monospace;
 }
 
 .route-item.selected {
   background-color: #007bff;
   color: white;
   border-color: #007bff;
+  font-family: monospace;
 }
 
 .route-item:hover {
   background-color: #cfe2ff;
+  font-family: monospace;
 }
 
 .route-path {
   font-weight: bold;
   font-size: 1.1em;
+  font-family: monospace;
 }
 
 .route-details {
   font-size: 0.9em;
   color: #6c757d;
+  font-family: monospace;
 }
 
 .route-item.selected .route-details {
   color: rgba(255, 255, 255, 0.8);
+  font-family: monospace;
 }
 
 .test-route-panel h3 {
@@ -1204,8 +1380,10 @@ body {
   min-height: 50px;
   max-height: 300px;
   overflow-y: auto;
-  white-space: pre-wrap; /* Ensures text wraps */
-  word-wrap: break-word; /* Break long words */
+  white-space: pre-wrap;
+  /* Ensures text wraps */
+  word-wrap: break-word;
+  /* Break long words */
   font-family: 'Courier New', Courier, monospace;
 }
 

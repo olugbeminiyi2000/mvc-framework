@@ -93,7 +93,6 @@ class V1Router:
             http_method (str): The HTTP method (e.g., "GET", "POST"). Defaults to "GET".
 
         Raises:
-            RuntimeError: If the route cannot be added due to validation errors.
             ValueError: If the http_method is not allowed.
         """
         ALLOWED_METHODS = {"GET", "POST", "PUT", "DELETE", "PATCH"}

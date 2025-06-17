@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeSection, onSectionChang
       <div className="sidebar">
         <div className="sidebar-inner">
           <div className="sidebar-header">
-            <h1 className="dashboard-title">MVC Dashboard</h1>
+            <h1 className="dashboard-title">V1 MVC Dashboard</h1>
           </div>
           <nav className="sidebar-nav">
             <button
@@ -24,28 +24,36 @@ const Layout: React.FC<LayoutProps> = ({ children, activeSection, onSectionChang
               onClick={() => onSectionChange('projects')}
             >
               <FolderIcon className="sidebar-icon" />
-              Projects
+              <div className="sidebar-btn-text">
+                Projects
+              </div>
             </button>
             <button
               className={`sidebar-btn${activeSection === 'server' ? ' sidebar-btn-active' : ''}`}
               onClick={() => onSectionChange('server')}
             >
               <ServerIcon className="sidebar-icon" />
-              Server
+              <div className="sidebar-btn-text">
+                Server
+              </div>
             </button>
             <button
               className={`sidebar-btn${activeSection === 'routes' ? ' sidebar-btn-active' : ''}`}
               onClick={() => onSectionChange('routes')}
             >
               <CodeBracketIcon className="sidebar-icon" />
-              Routes
+              <div className="sidebar-btn-text">
+                Routes
+              </div>
             </button>
             <button
               className={`sidebar-btn${activeSection === 'logs' ? ' sidebar-btn-active' : ''}`}
               onClick={() => onSectionChange('logs')}
             >
               <DocumentTextIcon className="sidebar-icon" />
-              Logs
+              <div className="sidebar-btn-text">
+                Logs
+              </div>
             </button>
           </nav>
         </div>
