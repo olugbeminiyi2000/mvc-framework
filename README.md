@@ -1,3 +1,7 @@
+![Python](https://img.shields.io/badge/Python-90%25-brightgreen.svg)
+![HTML](https://img.shields.io/badge/HTML-10%25-yellow.svg)
+![Contributors](https://img.shields.io/badge/contributors-2-orange.svg)
+
 # Documentation for V1 MVC Framework
 
 ## Introduction
