@@ -180,7 +180,45 @@ python -m servers.v1_runserver
 ### Step 6: Access the Web App
 Run the server and visit `http://127.0.0.1:8080/hello`.
 
----
+
+## 3. Using the Development Dashboard
+
+The V1 MVC Framework includes a development dashboard that helps you manage and debug your applications. The dashboard consists of a React frontend and a Flask backend.
+
+### Starting the Dashboard
+
+1. First, start the Flask backend server:
+```bash
+# From the root directory of the project
+python -m mvc-dashboard.server.app
+```
+
+2. Then, in a new terminal, start the React frontend:
+```bash
+# From the mvc-dashboard directory
+cd mvc-dashboard
+npm install  # Only needed first time
+npm start
+```
+
+The dashboard will be available at `http://localhost:3000`.
+
+### Dashboard Features
+- Server Management: Start, stop, and restart your MVC server
+- Route Testing: Test your routes with different HTTP methods and content types
+- File Management: View and edit your project files
+- Real-time Logs: Monitor server and application logs
+- Project Selection: Switch between different web applications
+
+### Troubleshooting
+If you encounter any issues:
+1. Make sure both the Flask backend and React frontend are running
+2. Check that the MVC server is properly configured
+3. Verify that all required dependencies are installed
+4. Check the console for any error messages
+
+For more detailed information about the dashboard components and their usage, refer to the dashboard documentation.
+
 
 ## Conclusion
 The **V1 MVC Framework** was built as a learning project to explore MVC principles by developing a fully functional small-scale framework. It covers essential features like **routing, transactions, request handling, and views** while maintaining simplicity. This framework serves as an excellent tool for gaining hands-on experience with MVC-based development.
@@ -191,7 +229,7 @@ The **V1 MVC Framework** was built as a learning project to explore MVC principl
 3. **Controller processes logic** and returns `"Hello, World!"`.
 4. **Router sends the response** to `HelloView.render()` as a `kwarg`.
 5. **View processes the response** and returns `"<h1>Hello, World!</h1>"`.
-6. **The rendered response is sent** to the client’s browser.
+6. **The rendered response is sent** to the client's browser.
 
 If a **view does not return anything**, no content will be displayed.
 
