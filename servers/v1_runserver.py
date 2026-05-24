@@ -43,7 +43,7 @@ class ServerReloader(FileSystemEventHandler):
         restart_server()
 
 MVC_HOST = os.environ.get("MVC_HOST", "127.0.0.1")
-MVC_PORT = int(os.environ.get("MVC_PORT", "8080"))
+MVC_PORT = int(os.environ.get("PORT", os.environ.get("MVC_PORT", "8080")))
 
 def server_thread_function():
     """Function to run the server in a separate thread."""
