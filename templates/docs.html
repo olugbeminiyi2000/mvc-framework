@@ -238,9 +238,12 @@ tx.end_transaction()             <span class="cm"># close the transaction</span>
       <strong>All-or-nothing:</strong> if any queued operation fails validation,
       <code>commit_transaction()</code> automatically calls <code>rollback_transaction()</code>
       before returning <code>False</code>. You can also call <code>rollback_transaction()</code>
-      yourself at any point before committing. <strong>Note:</strong> <code>add</code> requires
-      the key to be absent from the model; <code>update</code> requires it to already exist.
-      Never queue both on the same key in one transaction.
+      yourself at any point before committing. <strong>Note:</strong> <code>add</code>
+      requires the key to be absent from the model &mdash; if it already exists,
+      <code>add</code> raises immediately and the whole transaction rolls back on commit.
+      If the key is new, you can queue both <code>add</code> then <code>update</code>
+      on it safely; <code>update</code> simply overwrites what <code>add</code> set
+      and the last value wins.
     </div>
     <h3>Batch operations</h3>
     <p>Queue multiple operations in one call using <code>process_batch()</code>:</p>

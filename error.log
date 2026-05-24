@@ -510,3 +510,5 @@
 2025-02-18 22:19:01,641 - ERROR - Key 'age' not found for deletion: 'age'
 2025-02-18 22:19:01,641 - ERROR - Failed to execute delete on age: Key 'age' could not be deleted.
 2025-02-18 22:19:01,671 - ERROR - Key 'highschool' not found for deletion: 'highschool'
+2026-05-24 13:11:49,930 - ERROR - Some operations have failed, rolling back the transaction.
+2026-05-24 13:11:49,930 - ERROR - Some operations have failed, rolling back the transaction.
