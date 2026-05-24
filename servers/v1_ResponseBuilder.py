@@ -15,7 +15,7 @@ def construct_http_response(status_code: int, body: bytes, content_type: str = "
 
     headers = (
         f"HTTP/1.1 {status_code} {status_message}\r\n"
-        f"Content-Type: {content_type}\r\n"
+        f"Content-Type: {content_type}; charset=utf-8\r\n"
         f"Content-Length: {len(body)}\r\n"
         "Connection: close\r\n\r\n"
     ).encode("utf-8")  # Convert headers to bytes

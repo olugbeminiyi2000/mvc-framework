@@ -38,7 +38,7 @@ def render_template(template_name: str, data: dict) -> str:
 
     try:
         # Read the template file content
-        with open(filepath, 'r') as file:
+        with open(filepath, 'r', encoding='utf-8') as file:
             file_string = file.read()
 
         # Replace placeholders with values from data

@@ -123,123 +123,262 @@ Acts as a lightweight web server to process requests.
 
 ---
 
-## 2. Building a Simple Web App
+## 2. Building a Web App — Tasks API Example
 
-### Step 1: Define a Controller
-Create a controller that processes user requests.
-```python
-# File - webapp_name.hello_controller.py
+The framework gives you the structure. **You define the Model, View, and Controller** to suit whatever you are building. The example below is a Tasks API that demonstrates all five supported HTTP methods: `GET`, `POST`, `PUT`, `PATCH`, and `DELETE`.
 
-from controllers.v1_Controller import V1AbstractController
+Every project lives inside the `projects/` directory and follows this layout:
 
-class HelloController(V1AbstractController):
-    def __init__(self):
-        pass
-    
-    def hello(self, **kwargs):
-        return "Hello, World!"
+```
+projects/
+└── tasks/
+    ├── __init__.py
+    ├── model.py
+    ├── controller.py
+    ├── view.py
+    └── router.py
 ```
 
-### Step 2: Define a View
-Create a view that handles rendering the response.
+---
+
+### Step 1: Define the Model
+The model wraps `V1Model` and gives your project its own data file so it does not conflict with other projects.
+
 ```python
-# File - webapp_name.hello_view.py
+# projects/tasks/model.py
+
+from models.v1_Model import V1Model
+
+def get_model():
+    return V1Model(file_path="tasks_model.json")
+```
+
+---
+
+### Step 2: Define the Controller
+Each action method receives the parsed request body as `**kwargs` and returns a response dict that the view will render.
+
+```python
+# projects/tasks/controller.py
+
+from controllers.v1_Controller import V1AbstractController
+from projects.tasks.model import get_model
+
+
+class TaskController(V1AbstractController):
+    def __init__(self):
+        pass
+
+    def list_tasks(self, **kwargs):
+        db = get_model()
+        tasks = db.get_key_value("tasks") or []
+        return {"tasks": tasks, "count": len(tasks)}
+
+    def create_task(self, **kwargs):
+        title = kwargs.get("title")
+        if not title:
+            return {"error": "title is required"}
+
+        db = get_model()
+        tasks = db.get_key_value("tasks") or []
+
+        new_id = max((t["id"] for t in tasks), default=0) + 1
+        task = {
+            "id": new_id,
+            "title": title,
+            "description": kwargs.get("description", ""),
+            "status": kwargs.get("status", "pending"),
+            "priority": kwargs.get("priority", "low"),
+        }
+
+        tasks.append(task)
+        if new_id == 1:
+            db.add_key_value("tasks", tasks)
+        else:
+            db.update_key_value(tasks=tasks)
+
+        return {"message": f"Task '{title}' created", "task": task}
+
+    def update_task(self, **kwargs):
+        task_id = kwargs.get("id")
+        if not task_id:
+            return {"error": "id is required"}
+
+        required = ["title", "description", "status", "priority"]
+        missing = [f for f in required if f not in kwargs]
+        if missing:
+            return {"error": f"PUT requires all fields: {missing}"}
+
+        db = get_model()
+        tasks = db.get_key_value("tasks") or []
+
+        for i, task in enumerate(tasks):
+            if str(task["id"]) == str(task_id):
+                tasks[i] = {
+                    "id": task["id"],
+                    "title": kwargs["title"],
+                    "description": kwargs["description"],
+                    "status": kwargs["status"],
+                    "priority": kwargs["priority"],
+                }
+                db.update_key_value(tasks=tasks)
+                return {"message": "Task fully updated", "task": tasks[i]}
+
+        return {"error": f"Task with id {task_id} not found"}
+
+    def patch_task(self, **kwargs):
+        task_id = kwargs.get("id")
+        if not task_id:
+            return {"error": "id is required"}
+
+        db = get_model()
+        tasks = db.get_key_value("tasks") or []
+
+        for i, task in enumerate(tasks):
+            if str(task["id"]) == str(task_id):
+                for field in ["title", "description", "status", "priority"]:
+                    if field in kwargs:
+                        tasks[i][field] = kwargs[field]
+                db.update_key_value(tasks=tasks)
+                return {"message": "Task partially updated", "task": tasks[i]}
+
+        return {"error": f"Task with id {task_id} not found"}
+
+    def delete_task(self, **kwargs):
+        task_id = kwargs.get("id")
+        if not task_id:
+            return {"error": "id is required"}
+
+        db = get_model()
+        tasks = db.get_key_value("tasks") or []
+        updated = [t for t in tasks if str(t["id"]) != str(task_id)]
+
+        if len(updated) == len(tasks):
+            return {"error": f"Task with id {task_id} not found"}
+
+        db.update_key_value(tasks=updated)
+        return {"message": f"Task {task_id} deleted"}
+```
+
+---
+
+### Step 3: Define the View
+Because this is a JSON API, one view class handles every route. It receives the controller response as `controller_response` in `kwargs` and serialises it.
+
+```python
+# projects/tasks/view.py
 
 from views.v1_View import V1BaseView
 
-class HelloView(V1BaseView):
+
+class TaskJsonView(V1BaseView):
+    content_type = V1BaseView.CONTENT_TYPES["JSON"]
+
     def __init__(self):
         pass
-    
+
     def render(self, **kwargs):
-        message = kwargs["controller_response"]
-        return f"<h1>{message}</h1>"
+        return self.render_json(kwargs.get("controller_response") or {})
 ```
 
-### Step 3: Register the Route
-Define the route in the `v1_router.py` file.
-```python
-# File - webapp_name.hello_router.py
+> For HTML responses, inherit from `V1BaseView`, set `content_type` to `CONTENT_TYPES["HTML"]`, and call `self.render_template("template_name.html", data)` instead.
 
-from webapp_name.beta_view import HelloView
-from webapp_name.hello_controller import HelloController
-from routers.v1_Router import V1Router
-router = V1Router()
-router.add_route("/hello", HelloController, "hello", HelloView)
-
-```
+---
 
 ### Step 4: Register the Routes
-Before starting the server, ensure you run the file responsible for registering routes:
-```
-python -m webapp_name.hello_router
+Each route maps a URL + HTTP method to one controller action and one view. Because the router stores one method per path, each HTTP method gets its own explicit path.
+
+```python
+# projects/tasks/router.py
+
+from projects.tasks.controller import TaskController
+from projects.tasks.view import TaskJsonView
+from routers.v1_Router import V1Router
+
+route = V1Router()
+route.add_route("/tasks",        TaskController, "list_tasks",  TaskJsonView, "GET")
+route.add_route("/tasks/create", TaskController, "create_task", TaskJsonView, "POST")
+route.add_route("/tasks/update", TaskController, "update_task", TaskJsonView, "PUT")
+route.add_route("/tasks/patch",  TaskController, "patch_task",  TaskJsonView, "PATCH")
+route.add_route("/tasks/delete", TaskController, "delete_task", TaskJsonView, "DELETE")
 ```
 
-### Step 5: Start the Server
-Run the following command to start the server:
+---
+
+### Step 5: Register the Routes into the Router State
+Run this once to save your routes to `router_state.pkl` so the server can load them:
+
+```bash
+python -m projects.tasks.router
 ```
+
+---
+
+### Step 6: Start the Server
+
+```bash
 python -m servers.v1_runserver
 ```
 
-### Step 6: Access the Web App
-Run the server and visit `http://127.0.0.1:8080/hello`.
+The server starts at `http://127.0.0.1:8080` with hot reload enabled — it automatically restarts when any `.py` file changes.
 
+---
 
-## 3. Using the Development Dashboard
+### Step 7: Test All Five Methods with curl
 
-The V1 MVC Framework includes a development dashboard that helps you manage and debug your applications. The dashboard consists of a React frontend and a Flask backend.
-
-### Starting the Dashboard
-
-1. First, start the Flask backend server:
+**GET** — list all tasks:
 ```bash
-# From the root directory of the project
-python -m mvc-dashboard.server.app
+curl http://localhost:8080/tasks
 ```
 
-2. Then, in a new terminal, start the React frontend:
+**POST** — create a task (JSON body):
 ```bash
-# From the mvc-dashboard directory
-cd mvc-dashboard
-npm install  # Only needed first time
-npm start
+curl -X POST http://localhost:8080/tasks/create \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Build MVC framework", "description": "Implement router, controller, view", "status": "in-progress", "priority": "high"}'
 ```
 
-The dashboard will be available at `http://localhost:3000`.
+**PUT** — full replace (all fields required):
+```bash
+curl -X PUT http://localhost:8080/tasks/update \
+  -H "Content-Type: application/json" \
+  -d '{"id": 1, "title": "Build MVC framework", "description": "All layers done", "status": "done", "priority": "high"}'
+```
 
-### Dashboard Features
-- Server Management: Start, stop, and restart your MVC server
-- Route Testing: Test your routes with different HTTP methods and content types
-- File Management: View and edit your project files
-- Real-time Logs: Monitor server and application logs
-- Project Selection: Switch between different web applications
+**PATCH** — partial update (only the fields you want to change):
+```bash
+curl -X PATCH http://localhost:8080/tasks/patch \
+  -H "Content-Type: application/json" \
+  -d '{"id": 2, "status": "in-progress"}'
+```
 
-### Troubleshooting
-If you encounter any issues:
-1. Make sure both the Flask backend and React frontend are running
-2. Check that the MVC server is properly configured
-3. Verify that all required dependencies are installed
-4. Check the console for any error messages
+**DELETE** — remove by id:
+```bash
+curl -X DELETE http://localhost:8080/tasks/delete \
+  -H "Content-Type: application/json" \
+  -d '{"id": 1}'
+```
 
-For more detailed information about the dashboard components and their usage, refer to the dashboard documentation.
+> The request parser auto-detects `Content-Type`. The same routes also accept `multipart/form-data` (HTML forms with file uploads) and `application/x-www-form-urlencoded` (standard HTML forms) — the controller receives the fields as `**kwargs` either way.
 
+---
 
 ## Conclusion
-The **V1 MVC Framework** was built as a learning project to explore MVC principles by developing a fully functional small-scale framework. It covers essential features like **routing, transactions, request handling, and views** while maintaining simplicity. This framework serves as an excellent tool for gaining hands-on experience with MVC-based development.
+
+The **V1 MVC Framework** was built as a learning project to explore MVC principles by developing a fully functional small-scale framework from scratch — no external web frameworks, raw sockets, custom template engine, and a full validation and transaction layer. It covers essential features like **routing, transactions, request handling, and views** while maintaining simplicity.
 
 ### Understanding the Flow
-1. **Client sends a request** → `/hello`.
-2. **Router matches the request** and calls `HelloController.hello()`.
-3. **Controller processes logic** and returns `"Hello, World!"`.
-4. **Router sends the response** to `HelloView.render()` as a `kwarg`.
-5. **View processes the response** and returns `"<h1>Hello, World!</h1>"`.
-6. **The rendered response is sent** to the client's browser.
+
+Using the Tasks API as the example:
+
+1. **Client sends a request** → `POST /tasks/create` with a JSON body.
+2. **Request parser** reads the socket, extracts the method, path, and body into a dict.
+3. **Router matches the path and method** → calls `TaskController.create_task(**body)`.
+4. **Controller processes logic** → saves to the model → returns `{"message": "...", "task": {...}}`.
+5. **Router passes the response** to `TaskJsonView.render(controller_response=...)`.
+6. **View serialises the response** to JSON and returns it.
+7. **The rendered response is sent** back to the client.
 
 If a **view does not return anything**, no content will be displayed.
 
 This flow ensures a **clear separation of concerns** between routing, controller logic, and rendering views.
-
-```cmd
-netstat -ano | findstr :8080
-taskkill /PID [PID_NUMBER] /F
-```

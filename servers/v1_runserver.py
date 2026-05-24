@@ -48,7 +48,7 @@ def server_thread_function():
         route_router = V1Router(file_path=router_state_path)
         print(f"[V1_RUNSERVER] Router instance created. Registered routes: {route_router.routes.keys()}")
         print("[V1_RUNSERVER] Starting HTTP server...")
-start_http_server(route_router)
+        start_http_server(route_router)
     except Exception as e:
         print(f"[V1_RUNSERVER] Server thread error: {e}")
     finally:

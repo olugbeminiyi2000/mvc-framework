@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "react-joyride": "^2.9.3"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
   }
 }

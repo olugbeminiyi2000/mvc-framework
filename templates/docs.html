@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>V1 MVC Framework &mdash; Docs</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+  <script>
+    (function () {
+      var t = localStorage.getItem('docs-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="stylesheet" href="/static/docs.css" />
+</head>
+<body>
+
+<nav>
+  <div class="nav-header">
+    <div>
+      <div class="nav-brand-title">V1 MVC Framework</div>
+      <div class="nav-brand-sub">Documentation</div>
+    </div>
+    <button class="theme-toggle" id="themeBtn" title="Toggle theme">&#9790;</button>
+  </div>
+  <ul>
+    <li class="nav-section-label">Getting Started</li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#flow">Request Flow</a></li>
+    <li><a href="#quickstart">Quickstart</a></li>
+    <li class="nav-section-label">Framework</li>
+    <li><a href="#controller">Controller</a></li>
+    <li><a href="#model">Model</a></li>
+    <li><a href="#view">View</a></li>
+    <li><a href="#templates">Templates</a></li>
+    <li><a href="#static">Static Files</a></li>
+    <li><a href="#router">Router</a></li>
+    <li><a href="#server">Server</a></li>
+    <li class="nav-section-label">Reference</li>
+    <li><a href="#content-types">Content Types</a></li>
+    <li><a href="#example">Full Example</a></li>
+    <li><a href="#curl">curl Reference</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- Overview -->
+  <section id="overview">
+    <h1>V1 MVC Framework</h1>
+    <p class="tagline">
+      A personal MVC framework built from scratch &mdash; raw sockets, no external
+      web framework, custom template engine, full validation and transaction layer.
+    </p>
+    <div>
+      <span class="badge">Raw TCP sockets</span>
+      <span class="badge">No external web framework</span>
+      <span class="badge">JSON persistence</span>
+      <span class="badge">ACID transactions</span>
+      <span class="badge">Hot reload</span>
+    </div>
+    <p style="margin-top:1.4rem">
+      The framework handles the infrastructure: socket server, HTTP parsing, routing,
+      and response building. <strong>You define the Model, View, and Controller</strong>
+      for each project you build on top of it. Every project is a plain Python package
+      inside <code>projects/</code> with five files.
+    </p>
+    <div class="note">
+      <strong>Philosophy:</strong> The framework provides the structure. Your project
+      provides the logic. Two people using this framework can build completely different
+      things &mdash; a task manager, a blog, a user system &mdash; and neither project
+      knows anything about the other.
+    </div>
+  </section>
+
+  <!-- Flow -->
+  <section id="flow">
+    <h2>Request Flow</h2>
+    <p>Every request follows the same path through the framework, regardless of HTTP method or content type:</p>
+
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-num">1</div>
+        <div class="pipe-title">Client</div>
+      </div>
+      <div class="pipe-arrow">&rarr;</div>
+      <div class="pipe-step">
+        <div class="pipe-num">2</div>
+        <div class="pipe-title">HTTP Server</div>
+      </div>
+      <div class="pipe-arrow">&rarr;</div>
+      <div class="pipe-step">
+        <div class="pipe-num">3</div>
+        <div class="pipe-title">Parser</div>
+      </div>
+      <div class="pipe-arrow">&rarr;</div>
+      <div class="pipe-step mvc">
+        <div class="pipe-num">4</div>
+        <div class="pipe-title">Router</div>
+      </div>
+      <div class="pipe-arrow">&rarr;</div>
+      <div class="pipe-step mvc">
+        <div class="pipe-num">5</div>
+        <div class="pipe-title">Controller</div>
+      </div>
+      <div class="pipe-arrow">&rarr;</div>
+      <div class="pipe-step mvc">
+        <div class="pipe-num">6</div>
+        <div class="pipe-title">View</div>
+      </div>
+      <div class="pipe-arrow">&rarr;</div>
+      <div class="pipe-step">
+        <div class="pipe-num">&larr;</div>
+        <div class="pipe-title">Response</div>
+      </div>
+    </div>
+    <p class="mvc-note">Steps 4&ndash;6 are the <strong>MVC layer</strong> &mdash; the parts you implement per project.</p>
+
+    <h3>Step by step</h3>
+    <p><strong>1. HTTP Server</strong> &mdash; receives the raw TCP connection, reads the full request including headers and body based on <code>Content-Length</code>.</p>
+    <p><strong>2. Request Parser</strong> &mdash; extracts method, path, and body. Auto-detects <code>Content-Type</code> and normalises the body into a plain Python dict regardless of format.</p>
+    <p><strong>3. Router</strong> &mdash; matches path + method to a registered route, instantiates the controller, calls the action, and passes the body dict as <code>**kwargs</code>.</p>
+    <p><strong>4. Controller</strong> &mdash; runs your business logic, reads or writes the model, and returns a response dict.</p>
+    <p><strong>5. View</strong> &mdash; receives the controller response as <code>controller_response=</code> in kwargs, renders it as HTML or JSON, and returns a string.</p>
+    <p><strong>6. Response</strong> &mdash; the HTTP server wraps the string in a proper HTTP response with status, content-type, and charset headers, and sends it back to the client.</p>
+  </section>
+
+  <!-- Quickstart -->
+  <section id="quickstart">
+    <h2>Quickstart</h2>
+    <p>Every project lives in <code>projects/your_project/</code> with these five files:</p>
+    <pre><code>projects/
+&#x2514;&#x2500;&#x2500; your_project/
+    &#x251C;&#x2500;&#x2500; <span class="hl">__init__.py</span>
+    &#x251C;&#x2500;&#x2500; <span class="hl">model.py</span>       <span class="cm"># your data layer</span>
+    &#x251C;&#x2500;&#x2500; <span class="hl">controller.py</span>  <span class="cm"># your business logic</span>
+    &#x251C;&#x2500;&#x2500; <span class="hl">view.py</span>        <span class="cm"># your rendering</span>
+    &#x2514;&#x2500;&#x2500; <span class="hl">router.py</span>      <span class="cm"># URL &rarr; action mappings</span></code></pre>
+
+    <h3>1 &mdash; Register your routes</h3>
+    <p>Run once to save routes into <code>router_state.pkl</code>:</p>
+    <pre><code>python -m projects.your_project.router</code></pre>
+
+    <h3>2 &mdash; Start the server</h3>
+    <pre><code>python -m servers.v1_runserver</code></pre>
+    <p>
+      Server starts at <code>http://127.0.0.1:8080</code>. Hot reload is on &mdash;
+      the server restarts automatically whenever any <code>.py</code> file changes,
+      with a 2-second debounce.
+    </p>
+  </section>
+
+  <!-- Controller -->
+  <section id="controller">
+    <h2>Controller</h2>
+    <p>
+      Inherit from <code>V1AbstractController</code>. Every action method receives
+      the parsed request body as <code>**kwargs</code> and returns a value that the
+      view will receive as <code>controller_response</code>.
+    </p>
+    <pre><code><span class="kw">from</span> controllers.v1_Controller <span class="kw">import</span> V1AbstractController
+
+<span class="kw">class</span> <span class="cl">MyController</span>(V1AbstractController):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self):
+        <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">my_action</span>(self, **kwargs):
+        name = kwargs.get(<span class="st">"name"</span>, <span class="st">"World"</span>)
+        <span class="kw">return</span> {<span class="st">"message"</span>: <span class="st">f"Hello, {name}!"</span>}</code></pre>
+    <div class="warn">
+      <strong>Rule:</strong> Every action method must accept only <code>self</code>
+      and <code>**kwargs</code>. The router validates this at <code>add_route()</code>
+      time and raises a <code>ValueError</code> if you add required positional arguments.
+    </div>
+  </section>
+
+  <!-- Model -->
+  <section id="model">
+    <h2>Model</h2>
+    <p>
+      Wraps <code>V1Model</code>, which persists data to a JSON file. Pass a unique
+      <code>file_path</code> per project to keep data separate across projects.
+    </p>
+    <pre><code><span class="kw">from</span> models.v1_Model <span class="kw">import</span> V1Model
+
+db = V1Model(file_path=<span class="st">"my_project.json"</span>)
+
+<span class="cm"># Create</span>
+db.add_key_value(<span class="st">"items"</span>, [])
+
+<span class="cm"># Read</span>
+items = db.get_key_value(<span class="st">"items"</span>)
+
+<span class="cm"># Update &mdash; pass the key as a keyword argument</span>
+db.update_key_value(items=updated_list)
+
+<span class="cm"># Overwrite all data</span>
+db.overwrite_data({<span class="st">"items"</span>: []})</code></pre>
+
+    <h3>Atomic writes</h3>
+    <p>
+      Every write goes to a temp file first, then atomically replaces the real file
+      via <code>os.replace()</code>. Data is never left in a half-written state.
+    </p>
+
+    <h3>Transactions</h3>
+    <p>For operations that must all succeed or all fail together:</p>
+    <pre><code><span class="kw">from</span> models.transaction.v1_Transaction <span class="kw">import</span> V1Transaction
+
+tx = V1Transaction()
+tx.begin_transaction()
+tx.add(<span class="st">"items"</span>, new_item)
+tx.preview_transactions()    <span class="cm"># inspect the queue before committing</span>
+tx.commit_transaction()      <span class="cm"># or tx.rollback_transaction()</span>
+tx.end_transaction()</code></pre>
+  </section>
+
+  <!-- View -->
+  <section id="view">
+    <h2>View</h2>
+    <p>
+      Inherit from <code>V1BaseView</code>, set <code>content_type</code>, and implement
+      <code>render()</code>. The controller response arrives as
+      <code>kwargs["controller_response"]</code>.
+    </p>
+
+    <h3>JSON view</h3>
+    <pre><code><span class="kw">from</span> views.v1_View <span class="kw">import</span> V1BaseView
+
+<span class="kw">class</span> <span class="cl">MyJsonView</span>(V1BaseView):
+    content_type = V1BaseView.CONTENT_TYPES[<span class="st">"JSON"</span>]
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self): <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">render</span>(self, **kwargs):
+        <span class="kw">return</span> self.render_json(kwargs.get(<span class="st">"controller_response"</span>) <span class="kw">or</span> {})</code></pre>
+
+    <h3>HTML view</h3>
+    <pre><code><span class="kw">class</span> <span class="cl">MyHtmlView</span>(V1BaseView):
+    content_type = V1BaseView.CONTENT_TYPES[<span class="st">"HTML"</span>]
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self): <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">render</span>(self, **kwargs):
+        data = kwargs.get(<span class="st">"controller_response"</span>) <span class="kw">or</span> {}
+        <span class="kw">return</span> self.render_template(<span class="st">"my_template.html"</span>, data)</code></pre>
+
+    <div class="note">
+      <strong>Templates</strong> live in the <code>templates/</code> directory. Use
+      <code>&#123;&#123;key&#125;&#125;</code> placeholders &mdash; the view replaces them with
+      values from the dict you pass to <code>render_template()</code>. Unmatched
+      placeholders are removed from the output automatically.
+    </div>
+
+    <h3>Nested templates</h3>
+    <p>
+      Templates can be organised into subdirectories. Pass the relative path from
+      <code>templates/</code> as the template name:
+    </p>
+    <pre><code><span class="cm"># renders templates/emails/welcome.html</span>
+self.render_template(<span class="st">"emails/welcome.html"</span>, data)
+
+<span class="cm"># renders templates/admin/dashboard.html</span>
+self.render_template(<span class="st">"admin/dashboard.html"</span>, data)</code></pre>
+    <div class="note">
+      <strong>Note:</strong> The framework blocks <code>..</code> in template names to prevent
+      path traversal. Subdirectory paths are safe as long as they do not contain <code>..</code>.
+    </div>
+
+    <h3>Available content types</h3>
+    <pre><code>V1BaseView.CONTENT_TYPES[<span class="st">"HTML"</span>]   <span class="cm"># text/html</span>
+V1BaseView.CONTENT_TYPES[<span class="st">"JSON"</span>]   <span class="cm"># application/json</span>
+V1BaseView.CONTENT_TYPES[<span class="st">"PLAIN"</span>]  <span class="cm"># text/plain</span>
+V1BaseView.CONTENT_TYPES[<span class="st">"XML"</span>]    <span class="cm"># application/xml</span>
+V1BaseView.CONTENT_TYPES[<span class="st">"PDF"</span>]    <span class="cm"># application/pdf</span></code></pre>
+  </section>
+
+  <!-- Templates -->
+  <section id="templates">
+    <h2>Templates</h2>
+    <p>
+      Templates are plain HTML files that live in the <code>templates/</code> directory
+      at the root of your project. The framework has a built-in template engine that
+      replaces <code>&#123;&#123;key&#125;&#125;</code> placeholders with values you pass in,
+      then strips any unmatched placeholders from the output automatically.
+    </p>
+
+    <h3>Placeholder syntax</h3>
+    <p>Inside any <code>.html</code> file in <code>templates/</code>, use double curly braces:</p>
+    <pre><code><span class="cm">&lt;!-- templates/profile.html --&gt;</span>
+&lt;<span class="kw">h1</span>&gt;Hello, <span class="hl">&#123;&#123; name &#125;&#125;</span>&lt;/<span class="kw">h1</span>&gt;
+&lt;<span class="kw">p</span>&gt;You have <span class="hl">&#123;&#123; count &#125;&#125;</span> tasks pending.&lt;/<span class="kw">p</span>&gt;
+&lt;<span class="kw">p</span>&gt;Role: <span class="hl">&#123;&#123; role &#125;&#125;</span>&lt;/<span class="kw">p</span>&gt;  <span class="cm">&lt;!-- removed if not passed --&gt;</span></code></pre>
+
+    <p>Render it from your view by passing a dict whose keys match the placeholder names:</p>
+    <pre><code><span class="kw">def</span> <span class="fn">render</span>(self, **kwargs):
+    data = kwargs.get(<span class="st">"controller_response"</span>) <span class="kw">or</span> {}
+    <span class="kw">return</span> self.render_template(<span class="st">"profile.html"</span>, {
+        <span class="st">"name"</span>:  data.get(<span class="st">"name"</span>),
+        <span class="st">"count"</span>: data.get(<span class="st">"count"</span>),
+    })
+    <span class="cm"># &#123;&#123; role &#125;&#125; was not passed &rarr; removed from output automatically</span></code></pre>
+
+    <h3>Subdirectories</h3>
+    <p>
+      Templates can be organised into subdirectories inside <code>templates/</code>.
+      Pass the path relative to <code>templates/</code> as the template name:
+    </p>
+    <pre><code>templates/
+&#x251C;&#x2500;&#x2500; profile.html
+&#x251C;&#x2500;&#x2500; emails/
+&#x2502;   &#x251C;&#x2500;&#x2500; welcome.html
+&#x2502;   &#x2514;&#x2500;&#x2500; reset.html
+&#x2514;&#x2500;&#x2500; admin/
+    &#x2514;&#x2500;&#x2500; dashboard.html</code></pre>
+    <pre><code>self.render_template(<span class="st">"emails/welcome.html"</span>, data)
+self.render_template(<span class="st">"admin/dashboard.html"</span>, data)</code></pre>
+
+    <div class="note">
+      <strong>Security:</strong> The engine blocks any template name containing
+      <code>..</code> or starting with <code>/</code>. All other paths &mdash;
+      including deeply nested ones &mdash; resolve safely inside <code>templates/</code>.
+    </div>
+
+    <h3>How it works internally</h3>
+    <p>
+      The engine reads the file as UTF-8, then runs a regex substitution for every
+      key in the dict you pass. After all replacements, a second regex removes any
+      remaining <code>&#123;&#123; unmatched &#125;&#125;</code> placeholders so they never
+      appear as raw text in the browser. No loops, conditionals, or inheritance &mdash;
+      just straightforward string replacement.
+    </p>
+  </section>
+
+  <!-- Static Files -->
+  <section id="static">
+    <h2>Static Files</h2>
+    <p>
+      Any file placed inside the <code>static/</code> directory at the project root
+      is served directly by the HTTP server at the URL path
+      <code>/static/&lt;filename&gt;</code>. No extra configuration needed.
+    </p>
+
+    <h3>Referencing static files in templates</h3>
+    <pre><code><span class="cm">&lt;!-- stylesheet --&gt;</span>
+&lt;<span class="kw">link</span> rel=<span class="st">"stylesheet"</span> href=<span class="st">"/static/style.css"</span> /&gt;
+
+<span class="cm">&lt;!-- script --&gt;</span>
+&lt;<span class="kw">script</span> src=<span class="st">"/static/app.js"</span>&gt;&lt;/<span class="kw">script</span>&gt;
+
+<span class="cm">&lt;!-- image --&gt;</span>
+&lt;<span class="kw">img</span> src=<span class="st">"/static/images/logo.png"</span> /&gt;</code></pre>
+
+    <h3>Subdirectories</h3>
+    <p>
+      Nested folders inside <code>static/</code> are fully supported. The URL path
+      mirrors the folder structure exactly:
+    </p>
+    <pre><code>static/
+&#x251C;&#x2500;&#x2500; style.css             <span class="cm"># /static/style.css</span>
+&#x251C;&#x2500;&#x2500; app.js                <span class="cm"># /static/app.js</span>
+&#x251C;&#x2500;&#x2500; images/
+&#x2502;   &#x251C;&#x2500;&#x2500; logo.png          <span class="cm"># /static/images/logo.png</span>
+&#x2502;   &#x2514;&#x2500;&#x2500; banner.jpg        <span class="cm"># /static/images/banner.jpg</span>
+&#x2514;&#x2500;&#x2500; fonts/
+    &#x2514;&#x2500;&#x2500; mono.woff2        <span class="cm"># /static/fonts/mono.woff2</span></code></pre>
+
+    <h3>Supported MIME types</h3>
+    <div class="route-table">
+      <div class="route-row">
+        <span class="route-path">.html</span>
+        <span class="route-desc">text/html</span>
+        <span class="route-desc">.css &rarr; text/css</span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">.js</span>
+        <span class="route-desc">application/javascript</span>
+        <span class="route-desc">.svg &rarr; image/svg+xml</span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">.png / .jpg</span>
+        <span class="route-desc">image/png &mdash; image/jpeg</span>
+        <span class="route-desc">.gif &rarr; image/gif</span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">.ico</span>
+        <span class="route-desc">image/x-icon</span>
+        <span class="route-desc">.mp4 &rarr; video/mp4</span>
+      </div>
+    </div>
+    <div class="note">
+      <strong>Anything else</strong> falls back to <code>application/octet-stream</code>,
+      so the browser will treat it as a binary download. Add your own MIME type mapping
+      in <code>servers/v1_HTTPServer.py</code> inside <code>get_content_type()</code>
+      if you need a type that isn&rsquo;t listed above.
+    </div>
+  </section>
+
+  <!-- Router -->
+  <section id="router">
+    <h2>Router</h2>
+    <p>
+      Maps a URL path + HTTP method to a controller action and a view. Routes are
+      saved to <code>router_state.pkl</code> and reloaded every time the server starts.
+    </p>
+    <pre><code><span class="kw">from</span> routers.v1_Router <span class="kw">import</span> V1Router
+
+route = V1Router()
+route.add_route(
+    <span class="st">"/path"</span>,           <span class="cm"># URL path</span>
+    MyController,      <span class="cm"># controller class (not an instance)</span>
+    <span class="st">"action_name"</span>,    <span class="cm"># method name on the controller</span>
+    MyView,            <span class="cm"># view class (not an instance)</span>
+    <span class="st">"GET"</span>             <span class="cm"># HTTP method: GET POST PUT PATCH DELETE</span>
+)</code></pre>
+    <div class="warn">
+      <strong>One method per path.</strong> The router stores one entry per URL path.
+      If you need GET and POST on the same resource, use distinct paths:
+      <code>/tasks</code> for GET and <code>/tasks/create</code> for POST.
+    </div>
+  </section>
+
+  <!-- Server -->
+  <section id="server">
+    <h2>Server</h2>
+    <p>
+      Built on raw Python sockets &mdash; no Flask, no Django, no external web framework.
+      The server binds to <code>127.0.0.1:8080</code> and handles one connection at a time.
+    </p>
+    <pre><code>python -m servers.v1_runserver</code></pre>
+
+    <h3>Hot reload</h3>
+    <p>
+      Powered by Watchdog. Any <code>.py</code> file change triggers an automatic
+      server restart with a 2-second debounce to prevent rapid restarts on multiple
+      simultaneous saves.
+    </p>
+
+    <h3>Static files</h3>
+    <p>
+      Any file under <code>static/</code> is served directly at <code>/static/&lt;path&gt;</code>.
+      Nested subdirectories are fully supported &mdash; the URL path mirrors the folder structure.
+      MIME types are auto-detected for HTML, CSS, JS, images, and video.
+    </p>
+    <pre><code><span class="cm"># File on disk                   →  URL</span>
+static/docs.css                 <span class="cm"># /static/docs.css</span>
+static/images/logo.png          <span class="cm"># /static/images/logo.png</span>
+static/fonts/mono.woff2         <span class="cm"># /static/fonts/mono.woff2</span></code></pre>
+    <div class="note">
+      <strong>This page</strong> loads its stylesheet from <code>/static/docs.css</code> &mdash;
+      the same static file server that you use for your own projects.
+    </div>
+  </section>
+
+  <!-- Content Types -->
+  <section id="content-types">
+    <h2>Content Types</h2>
+    <p>
+      The request parser reads the <code>Content-Type</code> header and normalises
+      the body into a plain Python dict before it reaches the controller. Your controller
+      always gets the same <code>**kwargs</code> regardless of how the client sent the data.
+    </p>
+    <div class="route-table">
+      <div class="route-row">
+        <span><code>application/json</code></span>
+        <span class="route-path"></span>
+        <span class="route-desc">Body parsed with <code>json.loads()</code>. Keys become kwargs directly.</span>
+      </div>
+      <div class="route-row">
+        <span><code>multipart/form-data</code></span>
+        <span class="route-path"></span>
+        <span class="route-desc">HTML form with file uploads. Text fields are strings; files are <code>&#123;"filename", "content_type", "data"&#125;</code>.</span>
+      </div>
+      <div class="route-row">
+        <span><code>x-www-form-urlencoded</code></span>
+        <span class="route-path"></span>
+        <span class="route-desc">Standard HTML form. Parsed with <code>parse_qs()</code>. Keys become kwargs.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Full Example -->
+  <section id="example">
+    <h2>Full Example &mdash; Tasks API</h2>
+    <p>
+      A complete project demonstrating all five HTTP methods. This project is live
+      on this server &mdash; the same framework serving these docs is running the
+      Tasks API below.
+    </p>
+
+    <div class="route-table">
+      <div class="route-row">
+        <span><span class="method get">GET</span></span>
+        <span class="route-path">/tasks</span>
+        <span class="route-desc">List all tasks</span>
+      </div>
+      <div class="route-row">
+        <span><span class="method post">POST</span></span>
+        <span class="route-path">/tasks/create</span>
+        <span class="route-desc">Create a new task</span>
+      </div>
+      <div class="route-row">
+        <span><span class="method put">PUT</span></span>
+        <span class="route-path">/tasks/update</span>
+        <span class="route-desc">Full replace &mdash; all fields required</span>
+      </div>
+      <div class="route-row">
+        <span><span class="method patch">PATCH</span></span>
+        <span class="route-path">/tasks/patch</span>
+        <span class="route-desc">Partial update &mdash; send only what changes</span>
+      </div>
+      <div class="route-row">
+        <span><span class="method delete">DELETE</span></span>
+        <span class="route-path">/tasks/delete</span>
+        <span class="route-desc">Remove a task by id</span>
+      </div>
+    </div>
+
+    <h3>model.py</h3>
+    <pre><code><span class="kw">from</span> models.v1_Model <span class="kw">import</span> V1Model
+
+<span class="kw">def</span> <span class="fn">get_model</span>():
+    <span class="kw">return</span> V1Model(file_path=<span class="st">"tasks_model.json"</span>)</code></pre>
+
+    <h3>controller.py</h3>
+    <pre><code><span class="kw">from</span> controllers.v1_Controller <span class="kw">import</span> V1AbstractController
+<span class="kw">from</span> projects.tasks.model <span class="kw">import</span> get_model
+
+<span class="kw">class</span> <span class="cl">TaskController</span>(V1AbstractController):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self): <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">list_tasks</span>(self, **kwargs):
+        tasks = get_model().get_key_value(<span class="st">"tasks"</span>) <span class="kw">or</span> []
+        <span class="kw">return</span> {<span class="st">"tasks"</span>: tasks, <span class="st">"count"</span>: len(tasks)}
+
+    <span class="kw">def</span> <span class="fn">create_task</span>(self, **kwargs):
+        title = kwargs.get(<span class="st">"title"</span>)
+        <span class="kw">if not</span> title:
+            <span class="kw">return</span> {<span class="st">"error"</span>: <span class="st">"title is required"</span>}
+        db = get_model()
+        tasks = db.get_key_value(<span class="st">"tasks"</span>) <span class="kw">or</span> []
+        new_id = max((t[<span class="st">"id"</span>] <span class="kw">for</span> t <span class="kw">in</span> tasks), default=<span class="num">0</span>) + <span class="num">1</span>
+        task = {<span class="st">"id"</span>: new_id, <span class="st">"title"</span>: title,
+                <span class="st">"description"</span>: kwargs.get(<span class="st">"description"</span>, <span class="st">""</span>),
+                <span class="st">"status"</span>: kwargs.get(<span class="st">"status"</span>, <span class="st">"pending"</span>),
+                <span class="st">"priority"</span>: kwargs.get(<span class="st">"priority"</span>, <span class="st">"low"</span>)}
+        tasks.append(task)
+        <span class="kw">if</span> new_id == <span class="num">1</span>: db.add_key_value(<span class="st">"tasks"</span>, tasks)
+        <span class="kw">else</span>: db.update_key_value(tasks=tasks)
+        <span class="kw">return</span> {<span class="st">"message"</span>: <span class="st">f"Task '{title}' created"</span>, <span class="st">"task"</span>: task}
+
+    <span class="kw">def</span> <span class="fn">update_task</span>(self, **kwargs): ...   <span class="cm"># PUT: all fields required</span>
+    <span class="kw">def</span> <span class="fn">patch_task</span>(self, **kwargs):  ...   <span class="cm"># PATCH: any subset of fields</span>
+    <span class="kw">def</span> <span class="fn">delete_task</span>(self, **kwargs): ...   <span class="cm"># DELETE: requires id</span></code></pre>
+
+    <h3>view.py</h3>
+    <pre><code><span class="kw">from</span> views.v1_View <span class="kw">import</span> V1BaseView
+
+<span class="kw">class</span> <span class="cl">TaskJsonView</span>(V1BaseView):
+    content_type = V1BaseView.CONTENT_TYPES[<span class="st">"JSON"</span>]
+    <span class="kw">def</span> <span class="fn">__init__</span>(self): <span class="kw">pass</span>
+    <span class="kw">def</span> <span class="fn">render</span>(self, **kwargs):
+        <span class="kw">return</span> self.render_json(kwargs.get(<span class="st">"controller_response"</span>) <span class="kw">or</span> {})</code></pre>
+
+    <h3>router.py</h3>
+    <pre><code><span class="kw">from</span> projects.tasks.controller <span class="kw">import</span> TaskController
+<span class="kw">from</span> projects.tasks.view <span class="kw">import</span> TaskJsonView
+<span class="kw">from</span> routers.v1_Router <span class="kw">import</span> V1Router
+
+route = V1Router()
+route.add_route(<span class="st">"/tasks"</span>,        TaskController, <span class="st">"list_tasks"</span>,  TaskJsonView, <span class="st">"GET"</span>)
+route.add_route(<span class="st">"/tasks/create"</span>, TaskController, <span class="st">"create_task"</span>, TaskJsonView, <span class="st">"POST"</span>)
+route.add_route(<span class="st">"/tasks/update"</span>, TaskController, <span class="st">"update_task"</span>, TaskJsonView, <span class="st">"PUT"</span>)
+route.add_route(<span class="st">"/tasks/patch"</span>,  TaskController, <span class="st">"patch_task"</span>,  TaskJsonView, <span class="st">"PATCH"</span>)
+route.add_route(<span class="st">"/tasks/delete"</span>, TaskController, <span class="st">"delete_task"</span>, TaskJsonView, <span class="st">"DELETE"</span>)</code></pre>
+  </section>
+
+  <!-- curl Reference -->
+  <section id="curl">
+    <h2>curl Reference</h2>
+    <p>
+      All routes accept <code>application/json</code>, <code>multipart/form-data</code>,
+      and <code>application/x-www-form-urlencoded</code>. Examples below use JSON.
+    </p>
+
+    <h3><span class="method get">GET</span> List all tasks</h3>
+    <pre><code>curl http://localhost:8080/tasks</code></pre>
+
+    <h3><span class="method post">POST</span> Create a task</h3>
+    <pre><code>curl -X POST http://localhost:8080/tasks/create \
+  -H <span class="st">"Content-Type: application/json"</span> \
+  -d <span class="st">'{"title": "My task", "description": "Details", "status": "pending", "priority": "high"}'</span></code></pre>
+
+    <h3><span class="method put">PUT</span> Full replace (all fields required)</h3>
+    <pre><code>curl -X PUT http://localhost:8080/tasks/update \
+  -H <span class="st">"Content-Type: application/json"</span> \
+  -d <span class="st">'{"id": 1, "title": "Updated", "description": "New desc", "status": "done", "priority": "low"}'</span></code></pre>
+
+    <h3><span class="method patch">PATCH</span> Partial update</h3>
+    <pre><code>curl -X PATCH http://localhost:8080/tasks/patch \
+  -H <span class="st">"Content-Type: application/json"</span> \
+  -d <span class="st">'{"id": 1, "status": "in-progress"}'</span></code></pre>
+
+    <h3><span class="method delete">DELETE</span> Remove by id</h3>
+    <pre><code>curl -X DELETE http://localhost:8080/tasks/delete \
+  -H <span class="st">"Content-Type: application/json"</span> \
+  -d <span class="st">'{"id": 1}'</span></code></pre>
+  </section>
+
+</main>
+
+<script>
+  /* ── Theme toggle ── */
+  var btn = document.getElementById('themeBtn');
+
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    btn.textContent = t === 'dark' ? '☀' : '☽';
+    localStorage.setItem('docs-theme', t);
+  }
+
+  applyTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+
+  btn.addEventListener('click', function () {
+    var current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ── Section fade-in on scroll ── */
+  if ('IntersectionObserver' in window) {
+    var sections = document.querySelectorAll('main section');
+    sections.forEach(function (s) { s.classList.add('will-animate'); });
+
+    var fadeObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('will-animate');
+          entry.target.classList.add('animated');
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    sections.forEach(function (s) { fadeObserver.observe(s); });
+  }
+
+  /* ── Scroll spy: highlight active nav link ── */
+  var navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+  var spyObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        navLinks.forEach(function (a) { a.classList.remove('active'); });
+        var link = document.querySelector('nav a[href="#' + entry.target.id + '"]');
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+
+  document.querySelectorAll('main section[id]').forEach(function (s) {
+    spyObserver.observe(s);
+  });
+</script>
+</body>
+</html>
