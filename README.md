@@ -17,6 +17,60 @@ This documentation details the core components of the framework and demonstrates
 
 ---
 
+## Getting Started
+
+### Prerequisites
+- Python 3.9 or higher
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/olugbeminiyi2000/mvc-framework.git
+cd mvc-framework
+```
+
+### 2. Create a virtual environment
+
+**macOS / Linux:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+**Windows (Command Prompt):**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+**Windows (PowerShell):**
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+```
+
+> You should see `(venv)` appear at the start of your terminal prompt once the environment is active.
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+This installs:
+- **watchdog** — powers hot reload (server restarts automatically when you edit a `.py` file)
+- **pytest** — for running the test suite
+
+### 4. Start the server
+
+```bash
+python -m servers.v1_runserver
+```
+
+The server starts at `http://127.0.0.1:8080`.
+
+---
+
 ## 1. Framework Components
 
 ### 1.1 **Controllers (`v1_Controller.py`)**
