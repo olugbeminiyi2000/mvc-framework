@@ -235,12 +235,12 @@ tx.preview_transactions()        <span class="cm"># inspect the full queue befor
 tx.commit_transaction()          <span class="cm"># apply all &mdash; auto-rolls back if any op failed</span>
 tx.end_transaction()             <span class="cm"># close the transaction</span></code></pre>
     <div class="note">
-      <strong>All-or-nothing:</strong> if any queued operation fails validation,
+      <strong>All-or-nothing: </strong> if any queued operation fails validation,
       <code>commit_transaction()</code> automatically calls <code>rollback_transaction()</code>
       before returning <code>False</code>. You can also call <code>rollback_transaction()</code>
-      yourself at any point before committing. <strong>Note:</strong> <code>add</code>
+      yourself at any point before committing. <br><br><strong>Note: </strong> <code>add</code>
       requires the key to be absent from the model &mdash; if it already exists,
-      <code>add</code> raises immediately and the whole transaction rolls back on commit.
+      <code>add</code> raises an error immediately and the whole transaction rolls back on commit.
       If the key is new, you can queue both <code>add</code> then <code>update</code>
       on it safely; <code>update</code> simply overwrites what <code>add</code> set
       and the last value wins.
