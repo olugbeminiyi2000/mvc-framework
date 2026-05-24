@@ -261,10 +261,11 @@ tx.end_transaction()</code></pre>
   <section id="validation">
     <h2>Validation</h2>
     <p>
-      Validation runs automatically on every model write &mdash; you do not call it
-      explicitly. Every call to <code>add_key_value()</code>, <code>update_key_value()</code>,
-      <code>overwrite_data()</code>, and transaction ops passes through two layers before
-      anything is written to disk.
+      Validation runs automatically on every model write. Every call to <code>add_key_value()</code>,
+      <code>update_key_value()</code>, <code>overwrite_data()</code>, and transaction methods
+      (<code>tx.add()</code>, <code>tx.update()</code>) passes through two layers before anything
+      is written to disk. You can also import and call <code>V1Validation</code> methods directly
+      as standalone utilities &mdash; all methods are static.
     </p>
 
     <h3>Built-in key rules</h3>
