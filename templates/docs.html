@@ -21,7 +21,14 @@
       <div class="nav-brand-title">V1 MVC Framework</div>
       <div class="nav-brand-sub">Documentation</div>
     </div>
-    <button class="theme-toggle" id="themeBtn" title="Toggle theme">&#9790;</button>
+    <div class="nav-actions">
+      <a class="github-link" href="https://github.com/olugbeminiyi2000/mvc-framework" target="_blank" rel="noopener" title="View on GitHub">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+      <button class="theme-toggle" id="themeBtn" title="Toggle theme">&#9790;</button>
+    </div>
   </div>
   <ul>
     <li class="nav-section-label">Getting Started</li>
@@ -31,6 +38,7 @@
     <li class="nav-section-label">Framework</li>
     <li><a href="#controller">Controller</a></li>
     <li><a href="#model">Model</a></li>
+    <li><a href="#validation">Validation</a></li>
     <li><a href="#view">View</a></li>
     <li><a href="#templates">Templates</a></li>
     <li><a href="#static">Static Files</a></li>
@@ -194,8 +202,16 @@ items = db.get_key_value(<span class="st">"items"</span>)
 <span class="cm"># Update &mdash; pass the key as a keyword argument</span>
 db.update_key_value(items=updated_list)
 
-<span class="cm"># Overwrite all data</span>
-db.overwrite_data({<span class="st">"items"</span>: []})</code></pre>
+<span class="cm"># Delete a key</span>
+db.delete_key_value(<span class="st">"items"</span>)</code></pre>
+
+    <div class="warn">
+      <strong>overwrite_data:</strong> This method replaces all stored data with whatever
+      kwargs you pass, but it validates key uniqueness first &mdash; every key you
+      provide must <em>not</em> already exist in the current data, or it raises a
+      <code>ValueError</code>. To reset an existing key's value use
+      <code>update_key_value()</code> instead.
+    </div>
 
     <h3>Atomic writes</h3>
     <p>
@@ -204,15 +220,134 @@ db.overwrite_data({<span class="st">"items"</span>: []})</code></pre>
     </p>
 
     <h3>Transactions</h3>
-    <p>For operations that must all succeed or all fail together:</p>
-    <pre><code><span class="kw">from</span> models.transaction.v1_Transaction <span class="kw">import</span> V1Transaction
+    <p>For operations that must all succeed or all fail together. Pass your <code>V1Model</code> instance into <code>Transactions</code> &mdash; it wraps the model and intercepts every write:</p>
+    <pre><code><span class="kw">from</span> models.transaction.v1_Transaction <span class="kw">import</span> Transactions
 
-tx = V1Transaction()
+db = get_model()
+tx = Transactions(db)           <span class="cm"># wrap your model instance</span>
+
 tx.begin_transaction()
-tx.add(<span class="st">"items"</span>, new_item)
-tx.preview_transactions()    <span class="cm"># inspect the queue before committing</span>
-tx.commit_transaction()      <span class="cm"># or tx.rollback_transaction()</span>
+tx.add(<span class="st">"session_id"</span>, <span class="st">"abc123"</span>)  <span class="cm"># add a new key (must not already exist)</span>
+tx.update(<span class="st">"status"</span>, <span class="st">"active"</span>)   <span class="cm"># update an existing key</span>
+tx.delete(<span class="st">"temp"</span>)              <span class="cm"># queue a deletion</span>
+tx.read(<span class="st">"items"</span>)               <span class="cm"># read a key; result via Transactions.get_read_data()</span>
+tx.preview_transactions()        <span class="cm"># inspect the full queue before committing</span>
+tx.commit_transaction()          <span class="cm"># apply all &mdash; auto-rolls back if any op failed</span>
+tx.end_transaction()             <span class="cm"># close the transaction</span></code></pre>
+    <div class="note">
+      <strong>All-or-nothing:</strong> if any queued operation fails validation,
+      <code>commit_transaction()</code> automatically calls <code>rollback_transaction()</code>
+      before returning <code>False</code>. You can also call <code>rollback_transaction()</code>
+      yourself at any point before committing. <strong>Note:</strong> <code>add</code> requires
+      the key to be absent from the model; <code>update</code> requires it to already exist.
+      Never queue both on the same key in one transaction.
+    </div>
+    <h3>Batch operations</h3>
+    <p>Queue multiple operations in one call using <code>process_batch()</code>:</p>
+    <pre><code>tx.begin_transaction()
+tx.process_batch([
+    {<span class="st">"action"</span>: <span class="st">"add"</span>, <span class="st">"key"</span>: <span class="st">"name"</span>, <span class="st">"value"</span>: <span class="st">"Alice"</span>},
+    {<span class="st">"action"</span>: <span class="st">"update"</span>, <span class="st">"key"</span>: <span class="st">"score"</span>, <span class="st">"value"</span>: <span class="num">42</span>},
+    {<span class="st">"action"</span>: <span class="st">"delete"</span>, <span class="st">"key"</span>: <span class="st">"temp"</span>},
+])
+tx.commit_transaction()
 tx.end_transaction()</code></pre>
+  </section>
+
+  <!-- Validation -->
+  <section id="validation">
+    <h2>Validation</h2>
+    <p>
+      Validation runs automatically on every model write &mdash; you do not call it
+      explicitly. Every call to <code>add_key_value()</code>, <code>update_key_value()</code>,
+      <code>overwrite_data()</code>, and transaction ops passes through two layers before
+      anything is written to disk.
+    </p>
+
+    <h3>Built-in key rules</h3>
+    <p>Every key is checked against these rules on every write. Any failure raises a <code>ValueError</code> before the data is touched:</p>
+    <div class="route-table">
+      <div class="route-row">
+        <span class="route-path">Non-empty</span>
+        <span class="route-desc">Key cannot be <code>None</code>, an empty string, or a falsy value.</span>
+        <span></span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">Valid identifier</span>
+        <span class="route-desc">Must pass <code>str.isidentifier()</code>. Use underscores instead of spaces.</span>
+        <span></span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">Not a keyword</span>
+        <span class="route-desc">Cannot be a reserved Python word (<code>if</code>, <code>for</code>, <code>class</code>, etc.).</span>
+        <span></span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">Unique (on add)</span>
+        <span class="route-desc">Key must not already exist when using <code>add_key_value()</code>. Use <code>update_key_value()</code> to change an existing key.</span>
+        <span></span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">Length &le; 300</span>
+        <span class="route-desc">Key must not exceed 300 characters.</span>
+        <span></span>
+      </div>
+    </div>
+
+    <h3>Automatic format detection</h3>
+    <p>
+      Before writing, the framework inspects the <strong>value</strong> and tries to identify
+      its format. If it looks like an email, phone number, or URL, the format is validated
+      automatically &mdash; no extra code needed on your part:
+    </p>
+    <div class="route-table">
+      <div class="route-row">
+        <span class="route-path">Email</span>
+        <span class="route-desc">Matched against <code>RFC 5321</code>-style regex. Invalid emails are rejected.</span>
+        <span></span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">Phone</span>
+        <span class="route-desc">Checked against international dialing code patterns. Must include country code.</span>
+        <span></span>
+      </div>
+      <div class="route-row">
+        <span class="route-path">URL</span>
+        <span class="route-desc">Must start with <code>http://</code>, <code>https://</code>, <code>ftp://</code>, <code>ws://</code>, or <code>wss://</code>.</span>
+        <span></span>
+      </div>
+    </div>
+    <div class="note">
+      <strong>Non-string values</strong> (lists, dicts, ints, booleans) skip format detection
+      entirely and pass through as-is, as long as they are not <code>None</code>.
+    </div>
+
+    <h3>Custom rules</h3>
+    <p>
+      Register your own per-field validation rules on the model. The rule is a plain
+      Python function that takes the value and returns a boolean:
+    </p>
+    <pre><code>db = get_model()
+
+<span class="cm"># Register a rule: priority must be one of three values</span>
+db.register_rule(
+    <span class="st">"priority"</span>,
+    <span class="kw">lambda</span> v: v <span class="kw">in</span> (<span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span>),
+    <span class="st">"priority must be low, medium, or high"</span>,
+    <span class="st">"low"</span>   <span class="cm"># example value used to type-check the rule itself</span>
+)
+
+<span class="cm"># This will now raise ValueError for any write where priority is invalid</span>
+db.add_key_value(<span class="st">"priority"</span>, <span class="st">"urgent"</span>)   <span class="cm"># &rarr; ValueError</span>
+db.add_key_value(<span class="st">"priority"</span>, <span class="st">"high"</span>)     <span class="cm"># &rarr; OK</span>
+
+<span class="cm"># Remove the rule later</span>
+db.delete_rule(<span class="st">"priority"</span>)</code></pre>
+    <div class="warn">
+      <strong>Rules are persisted.</strong> Custom rules are saved to <code>model_state.pkl</code>
+      and reloaded every time the model is instantiated. Register rules once &mdash; usually
+      at the top of your <code>model.py</code> &mdash; and they stay active across server restarts.
+    </div>
   </section>
 
   <!-- View -->
@@ -469,7 +604,7 @@ static/fonts/mono.woff2         <span class="cm"># /static/fonts/mono.woff2</spa
       <div class="route-row">
         <span><code>multipart/form-data</code></span>
         <span class="route-path"></span>
-        <span class="route-desc">HTML form with file uploads. Text fields are strings; files are <code>&#123;"filename", "content_type", "data"&#125;</code>.</span>
+        <span class="route-desc">HTML form with file uploads. Text fields are strings; files are a dict: <code>&#123;"filename": "...", "content_type": "...", "data": b"..."&#125;</code>.</span>
       </div>
       <div class="route-row">
         <span><code>x-www-form-urlencoded</code></span>

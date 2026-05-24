@@ -4,7 +4,9 @@ import os
 import signal
 import sys
 import time
+# pyrefly: ignore [missing-import]
 from watchdog.observers import Observer
+# pyrefly: ignore [missing-import]
 from watchdog.events import FileSystemEventHandler
 import threading
 
