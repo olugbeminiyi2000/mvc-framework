@@ -42,6 +42,9 @@ class ServerReloader(FileSystemEventHandler):
         self.last_reload = current_time
         restart_server()
 
+MVC_HOST = os.environ.get("MVC_HOST", "127.0.0.1")
+MVC_PORT = int(os.environ.get("MVC_PORT", "8080"))
+
 def server_thread_function():
     """Function to run the server in a separate thread."""
     global server_running
@@ -49,8 +52,8 @@ def server_thread_function():
         print(f"[V1_RUNSERVER] Initializing V1Router with file: {router_state_path}")
         route_router = V1Router(file_path=router_state_path)
         print(f"[V1_RUNSERVER] Router instance created. Registered routes: {route_router.routes.keys()}")
-        print("[V1_RUNSERVER] Starting HTTP server...")
-        start_http_server(route_router)
+        print(f"[V1_RUNSERVER] Starting HTTP server on {MVC_HOST}:{MVC_PORT}...")
+        start_http_server(route_router, host=MVC_HOST, port=MVC_PORT)
     except Exception as e:
         print(f"[V1_RUNSERVER] Server thread error: {e}")
     finally:
