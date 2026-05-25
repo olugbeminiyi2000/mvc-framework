@@ -538,6 +538,25 @@ section.animated { animation: fadeSlideUp 0.45s ease both; }
   background: rgba(110, 118, 129, 0.1);
 }
 
+.nav-close {
+  display: none;
+  background: none;
+  border: 1px solid var(--border-faint);
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0.28rem 0.42rem;
+  font-size: 0.78rem;
+  line-height: 1;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.nav-close:hover {
+  border-color: var(--border);
+  color: var(--text);
+  background: rgba(110, 118, 129, 0.1);
+}
+
 /* ── Nav overlay backdrop ── */
 .nav-overlay {
   display: none;
@@ -552,6 +571,7 @@ section.animated { animation: fadeSlideUp 0.45s ease both; }
 /* ── Responsive: mobile ── */
 @media (max-width: 768px) {
   .mobile-header { display: flex; }
+  .nav-close { display: flex; align-items: center; justify-content: center; }
 
   nav {
     position: fixed;
