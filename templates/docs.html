@@ -15,7 +15,14 @@
 </head>
 <body>
 
-<nav>
+<div class="mobile-header" id="mobileHeader">
+  <button class="menu-toggle" id="menuBtn" title="Open navigation">&#9776;</button>
+  <span class="mobile-brand">V1 MVC Framework</span>
+  <div style="width:32px"></div>
+</div>
+<div class="nav-overlay" id="navOverlay"></div>
+
+<nav id="sideNav">
   <div class="nav-header">
     <div>
       <div class="nav-brand-title">V1 MVC Framework</div>
@@ -749,6 +756,32 @@ route.add_route(<span class="st">"/tasks/delete"</span>, TaskController, <span c
 </main>
 
 <script>
+  /* ── Mobile nav toggle ── */
+  var menuBtn = document.getElementById('menuBtn');
+  var sideNav = document.getElementById('sideNav');
+  var navOverlay = document.getElementById('navOverlay');
+
+  function openNav() {
+    sideNav.classList.add('open');
+    navOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeNav() {
+    sideNav.classList.remove('open');
+    navOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  if (menuBtn) menuBtn.addEventListener('click', openNav);
+  if (navOverlay) navOverlay.addEventListener('click', closeNav);
+
+  document.querySelectorAll('nav a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (window.innerWidth <= 768) closeNav();
+    });
+  });
+
   /* ── Theme toggle ── */
   var btn = document.getElementById('themeBtn');
 
