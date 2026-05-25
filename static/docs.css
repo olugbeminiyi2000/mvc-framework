@@ -595,12 +595,10 @@ section.animated { animation: fadeSlideUp 0.45s ease both; }
   .cards { grid-template-columns: 1fr; }
 
   .route-row {
-    grid-template-columns: 80px 1fr;
+    grid-template-columns: 1fr;
   }
 
-  .route-row > span:last-child {
-    grid-column: 1 / -1;
-  }
+  .route-row > span:empty { display: none; }
 
   .pipeline { gap: 0.15rem; }
   .pipe-step { min-width: 52px; padding: 0.45rem 0.5rem; }
